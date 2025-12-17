@@ -1,218 +1,316 @@
 /* Fuentes */
 @font-face {
-    font-family: FinkHeavy;
-    src: url(../assets/fonts/FinkHeavy\ Regular.ttf);
+  font-family: FinkHeavy;
+  src: url(../assets/fonts/FinkHeavy\ Regular.ttf);
 }
 
 @font-face {
-    font-family: Humming;
-    src: url(../assets/fonts/nintendoP_Humming-E_002pr.otf);
+  font-family: Humming;
+  src: url(../assets/fonts/nintendoP_Humming-E_002pr.otf);
 }
 
 html {
-    height: 100%;
-    font-size: 6.5px;
+  height: 100%;
+  font-size: 6.5px;
 }
 
 @media (min-width: 2560px) {
-    html {
-        font-size: 14px;
-    }
+  html {
+    font-size: 14px;
+  }
 }
 
 body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url(../assets/images/backgroud.png);
-    background-size: cover;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url(../assets/images/backgroud.png);
+  background-size: cover;
 }
 
-/* Contenedor general */ 
+/* Contenedor general */
 #contenedor {
-    width: 90%;
-    height: 90%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 90%;
+  height: 90%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Contenedor del logo */
 #contenedor_logo {
-    width: 50%;
-    height: 15%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 1; /* Coloca el logo sobre el resto de elementos del eje Z */
+  width: 50%;
+  height: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1; /* Coloca el logo sobre el resto de elementos del eje Z */
 }
 
 #imagen_logo {
-    width: 60em;
+  width: 60em;
 }
 
 @media (min-width: 2560px) {
-    #imagen_logo {
-        width: 72em;
-    }
+  #imagen_logo {
+    width: 72em;
+  }
 }
 
 /* Contenedor vending */
 #contenedor_vending {
-    width: 90%;
-    height: 80%;
-    overflow: hidden;
-    box-shadow: 0px 6px 6px 6px rgba(0, 0, 0, 20%);
-    background-color: #FDFDF1;
-    border-radius: 1em;
-    border: solid rgba(0, 0, 0, 0.27) 0.2em;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+  width: 90%;
+  height: 80%;
+  overflow: hidden;
+  box-shadow: 0px 6px 6px 6px rgba(0, 0, 0, 20%);
+  background-color: #fdfdf1;
+  border-radius: 2em;
+  border: solid rgba(0, 0, 0, 0.27) 0.2em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Artículos */
 #contenedor_articulos {
-    width: 45%;
-    height: 80%;
-    align-items: center;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-column-gap: 3.5em;
-    grid-row-gap: 3.5em;
-    align-items: center;
-    justify-items: center;
-    margin-right: 10em;
-    padding: 0.3em;
+  width: 45%;
+  height: 80%;
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 3.5em;
+  grid-row-gap: 3.5em;
+  align-items: center;
+  justify-items: center;
+  margin-right: 10em;
+  padding: 0.3em;
 }
 
 .celda_item {
-    border: solid 0.4em rgba(0, 0, 0, 0.27);
-    border-radius: 0.8em;
-    height: 100%;
-    width: 100%;
-    background-color: #FFFFFA;
-    box-shadow: inset 5px -12px 8px 0px rgba(0, 0, 0, 11%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  border: solid 0.5em rgba(0, 0, 0, 0.27);
+  border-radius: 2em;
+  height: 100%;
+  width: 100%;
+  background-color: #fffffa;
+  box-shadow: inset 5px -12px 8px 0px rgba(0, 0, 0, 11%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .item_imagen {
-    width: 48%;
-    margin-top: 5em;
+  width: 48%;
+  margin-top: 5em;
 }
 
 .precio_item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 3.5em;
-    width: 70%;
-    height: 50%;
-    background-image: url("../assets/icons/bocadillo_item.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    margin: 0em;
-    margin-bottom: -0.8em;
-    z-index: 1; /* Coloca el logo sobre el resto de elementos del eje Z */
-    font-family: Humming;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 3.5em;
+  width: 70%;
+  height: 50%;
+  background-image: url("../assets/icons/bocadillo_item.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  margin: 0em;
+  margin-bottom: -0.8em;
+  z-index: 1; /* Coloca el logo sobre el resto de elementos del eje Z */
+  font-family: Humming;
 }
 
 @media (min-width: 2560px) {
-    .precio_item {
-            font-size: 6.5em;
-    }
+  .precio_item {
+    font-size: 6.5em;
+  }
 }
 
 /* Contenedor panel */
 #contenedor_panel {
-    width: 35%;
-    height: 90%;
-    overflow: hidden;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+  width: 35%;
+  height: 90%;
+  overflow: hidden;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
-#pantalla {
-    margin-top: 8em;
-    border-radius: 1em;
-    background-color: #474646;
-    width: 80%;
-    height: 20%;
+.pantalla {
+  margin-top: 1.5em;
+  border-radius: 0.5em;
+  background-color: #474646;
+  width: 82%;
+  height: 20%;
+  color: #dddddd;
+  align-items: center;
+  justify-content: center;
+  font-family: Humming;
+  font-size: 7rem;
+  display: flex;
+  justify-content: center;
 }
 
 /* Contenedor teclado */
 #contenedor_teclado {
-    margin-top: 4em;
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-    height: 80%;
+  margin-top: 4em;
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  height: 80%;
 }
 
 #teclado {
-    background-color: #A7A7A7;
-    border-radius: 0.9em;
-    width: 70%;
-    align-items: center;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    grid-column-gap: 0.5em;
-    grid-row-gap: 0.5em;
-    align-items: center;
-    justify-items: center;
-    padding: 1em;
-    margin-bottom: 6em;
-    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
+  background-color: #a7a7a7;
+  border-radius: 2em;
+  width: 70%;
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 0.5em;
+  grid-row-gap: 0.5em;
+  align-items: center;
+  justify-items: center;
+  padding: 1em;
+  margin-bottom: 6em;
+  box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
 }
 
 .teclas_teclado {
-    background-color: #535353;
-    border-radius: 0.3em;
-    width: 85%;
-    height: 80%;
-    font-size: 9.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-family: Humming;
-    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
+  background-color: #535353;
+  border-radius: 0.3em;
+  width: 85%;
+  height: 80%;
+  font-size: 9.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: Humming;
+  box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
+  cursor: pointer;
 }
 
 /* Contenedor botones admin */
 #botones_admin {
-    width: 25%;
-    margin-left: 2em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 4em;
-    padding-top: 1em;
+  width: 25%;
+  margin-left: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 4em;
+  padding-top: 1em;
 }
 
 .boton_admin {
-    border: solid 0.5em #BEB6B6;
-    border-radius: 2em;
-    height: 16em;
-    width: 80%;
-    display: flex;
-    justify-items: center;
-    align-items: center;
-    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
+  border: solid 0.5em #beb6b6;
+  border-radius: 2em;
+  height: 16em;
+  width: 80%;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
+  cursor: pointer;
 }
 
 .botones_admin_icono {
-    width: 100%;
+  width: 100%;
+}
+
+/* Dialog (Overlay modal) */
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.unhidden {
+    display: block;
+    visibility: visible;
+}
+
+#overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.84);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+#modal {
+  background-color: #fdfdf1;
+  border-radius: 2em;
+  height: 60%;
+  width: 60%;
+  margin-top: 15em;
+  text-align: center;
+  box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 20%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#boton_cerrar_dialog {
+    align-self: flex-end;
+    margin-right: 2em;
+    margin-top: 2em;
+    width: 5em;
+    cursor: pointer;
+}
+
+#pantalla_dialog {
+    margin-top: 1em;
+    width: 50%;
+    height: 25%;
+}
+
+#contenedor_botones_ingreso {
+    margin-top: 7em;
+    height: 50%;
+    width: 90%;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap:10em;
+    grid-row-gap: 3em;
+}
+
+.boton_ingreso {
+    border: rgba(0, 0, 0, 0.27) solid 0.3em;
+    border-radius: 1.5em;
+    background-color: #FFFFFA;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-height: 20em;
+    cursor: pointer;
+}
+
+.icono_moneda {
+    width: 15em;
+}
+
+.boton_ingreso p{
+    margin: 0em;
+    width: 8em;
+    font-size: 4em;
+    font-family: Humming;
+    text-align: center;
+}
+
+#eur_5 img, #eur_10 img, #eur_20 img{
+    width: 13em;
+    margin-left: 2em;
 }

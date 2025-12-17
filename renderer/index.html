@@ -8,6 +8,8 @@
     <title>Animal Crossing Vending</title>
 </head>
 
+<script src="renderer.js"></script>
+
 <body>
     <div id="contenedor">
         <div id="contenedor_logo">
@@ -53,7 +55,8 @@
                 </div>
             </div>
             <div id="contenedor_panel">
-                <div id="pantalla">
+                <div id="pantalla" class="pantalla">
+                    ¡Bienvenido!
                 </div>
                 <div id="contenedor_teclado">
                     <div id="teclado">
@@ -72,16 +75,63 @@
 
                     </div>
                     <div id="botones_admin">
-                        <div class="boton_admin">
+                        <div class="boton_admin" id="boton1">
                             <img class="botones_admin_icono" src="../assets/icons/boton_ingresar_icono.svg">
                         </div>
-                        <div class="boton_admin">
+                        <div class="boton_admin" id="boton2">
                             <img class="botones_admin_icono" src="../assets/icons/boton_retirar_icono.svg">
                         </div>
-                        <div class="boton_admin">
+                        <div class="boton_admin" id="boton3">
                             <img class="botones_admin_icono" src="../assets/icons/boton_admin_icono.svg">
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="hidden">
+        <div id="modal">
+            <img id="boton_cerrar_dialog" src="../assets/icons/icono_cerrar.svg">
+            <div id="pantalla_dialog" class="pantalla">
+                Crédito: 0.0€
+            </div>
+            <div id="contenedor_botones_ingreso">
+                <div id="cents_5" class="boton_ingreso">
+                    <img class="icono_moneda" src="../assets/icons/icono_moneda.svg">
+                    <p>5 Céntimos</p>
+                </div>
+                <div id="cents_10" class="boton_ingreso">
+                    <img class="icono_moneda" src="../assets/icons/icono_moneda.svg">
+                    <p>10 Céntimos</p>
+                </div>
+                <div id="cents_20" class="boton_ingreso">
+                    <img class="icono_moneda" src="../assets/icons/icono_moneda.svg">
+                    <p>20 Céntimos</p>
+                </div>
+                <div id="cents_50" class="boton_ingreso">
+                    <img class="icono_moneda" src="../assets/icons/icono_moneda.svg">
+                    <p>50 Céntimos</p>
+                </div>
+                <div id="eur_1" class="boton_ingreso">
+                    <img class="icono_moneda" src="../assets/icons/icono_moneda.svg">
+                    <p>1 Euro</p>
+                </div>
+                <div id="eur_2" class="boton_ingreso">
+                    <img class="icono_moneda" src="../assets/icons/icono_moneda.svg">
+                    <p>2 Euros</p>
+                </div>
+                <div id="eur_5" class="boton_ingreso">
+                    <img class="icono_moneda" src="../assets/icons/icono_billete.svg">
+                    <p>5 Euros</p>
+                </div>
+                <div id="eur_10" class="boton_ingreso">
+                    <img class="icono_moneda" src="../assets/icons/icono_billete.svg">
+                    <p>10 Euros</p>
+                </div>
+                <div id="eur_20" class="boton_ingreso">
+                    <img class="icono_moneda" src="../assets/icons/icono_billete.svg">
+                    <p>20 Euros</p>
                 </div>
             </div>
         </div>
