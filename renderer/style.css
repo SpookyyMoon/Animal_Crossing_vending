@@ -1,0 +1,112 @@
+html {
+    height: 100%;
+    font-size: 16px;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(../assets/images/backgroud.png);
+    background-size: cover;
+}
+
+/* Contenedor general */ 
+#contenedor {
+    width: 90%;
+    height: 90%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Contenedor del logo */
+#contenedor_logo {
+    width: 50%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1; /* Coloca el logo sobre el resto de elementos del eje Z */
+}
+
+#imagen_logo {
+    width: 60em;
+}
+
+/* Contenedor vending */
+#contenedor_vending {
+    width: 90%;
+    height: 80%;
+    overflow: hidden;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 20%);
+    background-color: #FDFDF1;
+    border-radius: 1em;
+    border: solid rgba(0, 0, 0, 0.27) 0.2em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Artículos */
+#contenedor_articulos {
+    width: 45%;
+    height: 80%;
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 3em;
+    grid-row-gap: 3em;
+    align-items: center;
+    justify-items: center;
+    margin-right: 10em;
+    padding: 0.3em;
+}
+
+.celda_item {
+    border: solid 0.3em rgba(0, 0, 0, 0.27);
+    border-radius: 0.8em;
+    height: 100%;
+    width: 100%;
+    background-color: #FFFFFA;
+    box-shadow: inset 1px -7px 4px 0px rgba(0, 0, 0, 11%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item_imagen {
+    width: 48%;
+    margin-top: 5em;
+}
+
+.precio_item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 5em;
+    width: 70%;
+    height: 50%;
+    background-image: url("../assets/icons/bocadillo_item.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin: 0em;
+    margin-bottom: -0.8em;
+    z-index: 1; /* Coloca el logo sobre el resto de elementos del eje Z */
+}
+
+#contenedor_panel {
+    width: 35%;
+    height: 80%;
+    overflow: hidden;
+    align-items: center;
+    border: solid 0.1em black;
+}
