@@ -1,6 +1,17 @@
+/* Fuentes */
+@font-face {
+    font-family: FinkHeavy;
+    src: url(../assets/fonts/FinkHeavy\ Regular.ttf);
+}
+
+@font-face {
+    font-family: Humming;
+    src: url(../assets/fonts/nintendoP_Humming-E_002pr.otf);
+}
+
 html {
     height: 100%;
-    font-size: 16px;
+    font-size: 6.5px;
 }
 
 body {
@@ -61,8 +72,8 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    grid-column-gap: 3em;
-    grid-row-gap: 3em;
+    grid-column-gap: 3.5em;
+    grid-row-gap: 3.5em;
     align-items: center;
     justify-items: center;
     margin-right: 10em;
@@ -70,7 +81,7 @@ body {
 }
 
 .celda_item {
-    border: solid 0.3em rgba(0, 0, 0, 0.27);
+    border: solid 0.4em rgba(0, 0, 0, 0.27);
     border-radius: 0.8em;
     height: 100%;
     width: 100%;
@@ -91,7 +102,7 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-size: 5em;
+    font-size: 3.5em;
     width: 70%;
     height: 50%;
     background-image: url("../assets/icons/bocadillo_item.svg");
@@ -101,12 +112,83 @@ body {
     margin: 0em;
     margin-bottom: -0.8em;
     z-index: 1; /* Coloca el logo sobre el resto de elementos del eje Z */
+    font-family: Humming;
 }
 
+/* Contenedor panel */
 #contenedor_panel {
     width: 35%;
     height: 80%;
     overflow: hidden;
     align-items: center;
-    border: solid 0.1em black;
+    display: flex;
+    flex-direction: column;
+}
+
+#pantalla {
+    margin-top: 8em;
+    border-radius: 1em;
+    background-color: #474646;
+    width: 80%;
+    height: 20%;
+}
+
+/* Contenedor teclado */
+#contenedor_teclado {
+    margin-top: 4em;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    height: 80%;
+}
+
+#teclado {
+    background-color: #A7A7A7;
+    border-radius: 0.9em;
+    width: 70%;
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 0.5em;
+    grid-row-gap: 0.5em;
+    align-items: center;
+    justify-items: center;
+    padding: 1em;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 25%);
+}
+
+.teclas_teclado {
+    background-color: #535353;
+    border-radius: 0.3em;
+    width: 85%;
+    height: 80%;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Humming;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 25%);
+}
+
+/* Contenedor botones admin */
+#botones_admin {
+    width: 25%;
+    margin-left: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1em;
+    padding-top: 1em;
+}
+
+.boton_admin {
+    border: solid 0.4em #BEB6B6;
+    border-radius: 0.9em;
+    height: 13em;
+    width: 80%;
+    display: flex;
+    justify-items: center;
+    align-items: center;
 }
