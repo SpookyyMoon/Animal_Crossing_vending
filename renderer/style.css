@@ -14,6 +14,12 @@ html {
     font-size: 6.5px;
 }
 
+@media (min-width: 2560px) {
+    html {
+        font-size: 14px;
+    }
+}
+
 body {
     height: 100%;
     margin: 0;
@@ -49,12 +55,18 @@ body {
     width: 60em;
 }
 
+@media (min-width: 2560px) {
+    #imagen_logo {
+        width: 72em;
+    }
+}
+
 /* Contenedor vending */
 #contenedor_vending {
     width: 90%;
     height: 80%;
     overflow: hidden;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 20%);
+    box-shadow: 0px 6px 6px 6px rgba(0, 0, 0, 20%);
     background-color: #FDFDF1;
     border-radius: 1em;
     border: solid rgba(0, 0, 0, 0.27) 0.2em;
@@ -86,7 +98,7 @@ body {
     height: 100%;
     width: 100%;
     background-color: #FFFFFA;
-    box-shadow: inset 1px -7px 4px 0px rgba(0, 0, 0, 11%);
+    box-shadow: inset 5px -12px 8px 0px rgba(0, 0, 0, 11%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -115,10 +127,16 @@ body {
     font-family: Humming;
 }
 
+@media (min-width: 2560px) {
+    .precio_item {
+            font-size: 6.5em;
+    }
+}
+
 /* Contenedor panel */
 #contenedor_panel {
     width: 35%;
-    height: 80%;
+    height: 90%;
     overflow: hidden;
     align-items: center;
     display: flex;
@@ -155,7 +173,8 @@ body {
     align-items: center;
     justify-items: center;
     padding: 1em;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 25%);
+    margin-bottom: 6em;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
 }
 
 .teclas_teclado {
@@ -163,13 +182,13 @@ body {
     border-radius: 0.3em;
     width: 85%;
     height: 80%;
-    font-size: 30px;
+    font-size: 9.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
     font-family: Humming;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 25%);
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
 }
 
 /* Contenedor botones admin */
@@ -179,16 +198,21 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 1em;
+    row-gap: 4em;
     padding-top: 1em;
 }
 
 .boton_admin {
-    border: solid 0.4em #BEB6B6;
-    border-radius: 0.9em;
-    height: 13em;
+    border: solid 0.5em #BEB6B6;
+    border-radius: 2em;
+    height: 16em;
     width: 80%;
     display: flex;
     justify-items: center;
     align-items: center;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 25%);
+}
+
+.botones_admin_icono {
+    width: 100%;
 }
