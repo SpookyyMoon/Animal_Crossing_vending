@@ -52,7 +52,7 @@ body {
 }
 
 #imagen_logo {
-  width: 60em;
+  width: 80em;
 }
 
 @media (min-width: 2560px) {
@@ -114,7 +114,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 3.5em;
+  font-size: 5em;
   width: 70%;
   height: 50%;
   background-image: url("../assets/icons/bocadillo_item.svg");
@@ -122,7 +122,7 @@ body {
   background-size: contain;
   background-position: center;
   margin: 0em;
-  margin-bottom: -0.8em;
+  margin-bottom: -1.3em;
   z-index: 1; /* Coloca el logo sobre el resto de elementos del eje Z */
   font-family: Humming;
 }
@@ -313,4 +313,123 @@ body {
 #eur_5 img, #eur_10 img, #eur_20 img{
     width: 13em;
     margin-left: 2em;
+}
+
+/* Contenedor opciones admin */
+#contenedor_vending_admin {
+  width: 90%;
+  height: 80%;
+  overflow: hidden;
+  box-shadow: 0px 6px 6px 6px rgba(0, 0, 0, 20%);
+  background-color: #fdfdf1;
+  border-radius: 2em;
+  border: solid rgba(0, 0, 0, 0.27) 0.2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#contenedor_opciones {
+  display: flex;
+  flex-direction: row;
+  height: 15%;
+  width: 90%;
+  align-items: center;
+}
+
+.opciones_admin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 90%;
+  background-image: url("../assets/icons/bocadillo_admin_opciones.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  margin: 0em;
+  margin-bottom: -1.3em;
+}
+
+.opciones_admin p{
+  font-family: FinkHeavy;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 6em;
+  cursor: pointer;
+  width: 5em;
+}
+
+/* Stock */
+#contenedor_stock {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  align-items: center;
+  justify-items: center;
+  border: solid #BEB6B6 0.5em;
+  border-radius: 2em;
+  height: 60%;
+  width: 90%;
+  margin-top: 5em;
+  padding: 5em;
+}
+
+.item_stock {
+  height: 80%;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+}
+
+.icono_item {
+  width: 20%;
+  margin-left: 1em;
+}
+
+.contendor_item_info {
+  width: 75%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+.nombre_item_info {
+  font-family: Humming;
+  font-size: 4em;
+  height: 15%;
+  margin: 0em;
+  margin-top: 1em;
+}
+
+.contenido_item_info {
+  height: 50%;
+  margin-top: 4em;
+  display: flex;
+  flex-direction: row;
+}
+
+.item_info_texto {
+  font-family: Humming;
+  font-size: 3em;
+  height: 50%;
+  width: 30%;
+  margin: 0em;
+  margin-top: 0.5em;
+}
+
+/* Cambiar a form */
+.item_info_variable {
+  font-family: Humming;
+  font-size: 3em;
+  height: 50%;
+  width: 30%;
+  margin: 0em;
+  margin-top: 0.5em;
+  margin-right: 0.5em;
+  border-radius: 0.5em;
+  background-color: white;
+  border: solid #BEB6B6 0.15em;
+  cursor: text;
 }
