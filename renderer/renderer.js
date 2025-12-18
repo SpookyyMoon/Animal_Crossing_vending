@@ -17,6 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const botonesIngreso = document.querySelectorAll(".boton_ingreso"); // Conjunto ingreso efectivo
   const opcionesAdmin = document.querySelectorAll(".opciones_admin"); // Botones panel administrador
 
+  // Lista articulos
+  const listaArticulos = [canhaObjeto];
+
+  // Artículos
+  let canhaObjeto = {
+    nombre: "Caña",
+    numero: "01",
+    precio: 10,
+  };
+
   // Pulsado de logo
   if (imagen_logo) {
     imagen_logo.addEventListener("click", () => {
@@ -104,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+  /*
   // Función de registrado de teclas pulsadas en pantalla
   function gestorTecla(valor) {
     if (valor === "C") {
@@ -149,6 +160,17 @@ document.addEventListener("DOMContentLoaded", () => {
       entrada += valor;
       actualizarPantalla();
     }
+  }
+  */  
+
+  function comprobacionObjeto(entrada) {
+    listaArticulos.forEach((articulo) => {
+      if (articulo.numero == entrada) {
+        return articulo.precio;
+      } else {
+        return "Producto inválido";
+      }
+    });
   }
 
   // Actualización de pantalla
