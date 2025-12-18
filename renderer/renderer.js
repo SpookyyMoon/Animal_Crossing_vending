@@ -1,98 +1,119 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const pantalla = document.getElementById("pantalla");
-  const overlay = document.getElementById("overlay");
-  const boton_cerrar_dialog = document.getElementById("boton_cerrar_dialog");
-  const pantalla_dialog = document.getElementById("pantalla_dialog");
-
+  // Variables
   let entrada = "";
   let entradaDialog = "";
   let creditoInsertado = 0;
 
-  // Pulsado de teclas
+  // Elementos por ID
+  const pantalla = document.getElementById("pantalla");
+  const overlay = document.getElementById("overlay");
+  const boton_cerrar_dialog = document.getElementById("boton_cerrar_dialog");
+  const pantalla_dialog = document.getElementById("pantalla_dialog");
+  const imagen_logo = document.getElementById("imagen_logo");
+
+  // Elementos por clase
   const teclas = document.querySelectorAll(".teclas_teclado"); // Conjunto teclas teclado
   const botonesAdmin = document.querySelectorAll(".boton_admin"); // Conjunto teclas laterales
   const botonesIngreso = document.querySelectorAll(".boton_ingreso"); // Conjunto ingreso efectivo
+  const opcionesAdmin = document.querySelectorAll(".opciones_admin"); // Botones panel administrador
+
+  // Pulsado de logo
+  if (imagen_logo) {
+    imagen_logo.addEventListener("click", () => {
+      window.location.href = "./index.html";
+    });
+  }
 
   // Botón cerrado dialog ingreso
-  boton_cerrar_dialog.addEventListener("click", () => {
-    overlay.classList = "";
-    overlay.classList = "hidden";
-  });
+  if (boton_cerrar_dialog && overlay) {
+    boton_cerrar_dialog.addEventListener("click", () => {
+      overlay.classList.add("hidden");
+      overlay.classList.remove("unhidden");
+    });
+  }
+  // Botones admin
+  if (opcionesAdmin.length > 0) {
+    opcionesAdmin.forEach((opcion) => {
+      opcion.addEventListener("click", () => {
+        const idOpcion = opcion.id;
+
+        if (idOpcion === "admin_opcion_1") {
+          window.location.href = "./admin_panel_stock.html";
+        } else if (idOpcion === "admin_opcion_2") {
+          window.location.href = "./admin_panel_precio.html";
+        } else if (idOpcion === "admin_opcion_3") {
+          window.location.href = "./admin_panel_retiradas.html";
+        }
+      });
+    });
+  }
 
   // Botones teclado
-  teclas.forEach((tecla) => {
-    // Detector de tecla
-    tecla.addEventListener("click", () => {
-      const valor = tecla.textContent;
-
-      gestorTecla(valor);
+  if (teclas.length > 0) {
+    teclas.forEach((tecla) => {
+      tecla.addEventListener("click", () => {
+        const valor = tecla.textContent;
+        gestorTecla(valor);
+      });
     });
-  });
+  }
 
   // Botones laterales
-  botonesAdmin.forEach((boton) => {
-    // Detector de botón
-    boton.addEventListener("click", () => {
-      const idBoton = boton.id;
+  if (botonesAdmin.length > 0) {
+    botonesAdmin.forEach((boton) => {
+      boton.addEventListener("click", () => {
+        const idBoton = boton.id;
 
-      if (idBoton === "boton1") {
-        overlay.classList = "";
-        overlay.classList = "unhidden";
-      } else if (idBoton === "boton2") {
-      } else if (idBoton === "boton3") {
-      }
+        if (idBoton === "boton1" && overlay) {
+          overlay.classList.remove("hidden");
+          overlay.classList.add("unhidden");
+        } else if (idBoton === "boton3") {
+          window.location.href = "./admin_panel_stock.html";
+        }
+      });
     });
-  });
+  }
 
   // Botones ingreso
-  botonesIngreso.forEach((boton) => {
-    // Detector de botón
-    boton.addEventListener("click", () => {
-      const idBoton = boton.id;
+  if (botonesIngreso.length > 0) {
+    botonesIngreso.forEach((boton) => {
+      boton.addEventListener("click", () => {
+        const idBoton = boton.id;
 
-      if (idBoton === "cents_5") {
-        creditoInsertado += 0.05;
+        if (idBoton === "cents_5") {
+          creditoInsertado += 0.05;
+        } else if (idBoton === "cents_10") {
+          creditoInsertado += 0.1;
+        } else if (idBoton === "cents_20") {
+          creditoInsertado += 0.2;
+        } else if (idBoton === "cents_50") {
+          creditoInsertado += 0.5;
+        } else if (idBoton === "eur_1") {
+          creditoInsertado += 1;
+        } else if (idBoton === "eur_2") {
+          creditoInsertado += 2;
+        } else if (idBoton === "eur_5") {
+          creditoInsertado += 5;
+        } else if (idBoton === "eur_10") {
+          creditoInsertado += 10;
+        } else if (idBoton === "eur_20") {
+          creditoInsertado += 20;
+        }
+
         actualizarPantallaDialog();
-      } else if (idBoton === "cents_10") {
-        creditoInsertado += 0.10;
-        actualizarPantallaDialog();
-      } else if (idBoton === "cents_20") {
-        creditoInsertado += 0.20;
-        actualizarPantallaDialog();
-      }
-      else if (idBoton === "cents_50") {
-        creditoInsertado += 0.50;
-        actualizarPantallaDialog();
-      }
-      else if (idBoton === "eur_1") {
-        creditoInsertado += 1;
-        actualizarPantallaDialog();
-      }
-      else if (idBoton === "eur_2") {
-        creditoInsertado += 2;
-        actualizarPantallaDialog();
-      }
-      else if (idBoton === "eur_5") {
-        creditoInsertado += 5;
-        actualizarPantallaDialog();
-      }
-      else if (idBoton === "eur_10") {
-        creditoInsertado += 10;
-        actualizarPantallaDialog();
-      }
-      else if (idBoton === "eur_20") {
-        creditoInsertado += 20;
-        actualizarPantallaDialog();
-      }
+      });
     });
-  });
-
+  }
   // Función de registrado de teclas pulsadas en pantalla
   function gestorTecla(valor) {
     if (valor === "C") {
       // Limpia la pantalla
-      if (!entrada.includes("Crédito:") && !entrada.includes("Inserte")) {
-        entrada = "";
+      if (
+        !entrada.includes("Crédito:") &&
+        !entrada.includes("Inserte") &&
+        !entrada.includes("Seleccione")
+      ) {
+        entrada = "Seleccione producto";
         actualizarPantalla();
       }
     } else if (valor === "E") {
@@ -117,7 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else {
       // Añadir número a pantalla
-      if (entrada.includes("Crédito:") || entrada.includes("Inserte")) {
+      if (
+        entrada.includes("Crédito:") ||
+        entrada.includes("Inserte") ||
+        entrada.includes("Seleccione")
+      ) {
         // Si el crédito se estaba mostrando en pantalla se borra
         entrada = "";
       }
