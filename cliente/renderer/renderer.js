@@ -1,4 +1,33 @@
-document.addEventListener("DOMContentLoaded", () => {
+const BASE_URL = "http://localhost:3000";
+
+// Función para obtener todos los artículos de la base de datos
+async function obtenerArticulos() {
+  try {
+    const respuesta = await fetch(`${BASE_URL}/articulos`);
+    if (!respuesta.ok) throw new Error("Error al obtener artículos");
+    const articulos = await respuesta.json();
+    return articulos;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Función para obtener la caja completa
+async function obtenerCaja() {
+  try {
+    const respuesta = await fetch(`${BASE_URL}/caja`);
+    if (!respuesta.ok) throw new Error("Error al obtener caja");
+    const caja = await respuesta.json();
+    return caja;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const articulos = await obtenerArticulos();
+  const caja = await obtenerCaja();
+
   // Variables
   let entrada = "";
   let entradaDialog = "";
@@ -17,15 +46,35 @@ document.addEventListener("DOMContentLoaded", () => {
   const botonesIngreso = document.querySelectorAll(".boton_ingreso"); // Conjunto ingreso efectivo
   const opcionesAdmin = document.querySelectorAll(".opciones_admin"); // Botones panel administrador
 
-  // Artículos
-  let canhaObjeto = {
-    nombre: "Caña",
-    numero: "01",
-    precio: 10,
-  };
+  // Elementos panel retiradas
+  const info_5cents = document.getElementById("info_5cents"); // Cantidad monedas 5 céntimos
+  const info_total_5cents = document.getElementById("info_total_5cents"); // Total dinero en monedas de 5 céntimos
+  const info_10cents = document.getElementById("info_10cents"); // Cantidad monedas 10 céntimos
+  const info_total_10cents = document.getElementById("info_total_10cents"); // Total dinero en monedas de 10 céntimos
+  const info_20cents = document.getElementById("info_20cents"); // Cantidad monedas 20 céntimos
+  const info_total_20cents = document.getElementById("info_total_20cents"); // Total dinero en monedas de 20 céntimos
+  const info_50cents = document.getElementById("info_50cents"); // Cantidad monedas 50 céntimos
+  const info_total_50cents = document.getElementById("info_total_50cents"); // Total dinero en monedas de 50 céntimos
+  const info_1euro = document.getElementById("info_1euro"); // Cantidad monedas 1 euro
+  const info_total_1euro = document.getElementById("info_total_1euro"); // Total dinero en monedas de 1 euro
+  const info_2euros = document.getElementById("info_2euros"); // Cantidad monedas 2 euros
+  const info_total_2euros = document.getElementById("info_total_2euros"); // Total dinero en monedas de 2 euros
+  const info_5euros = document.getElementById("info_5euros"); // Cantidad billetes 5 euros
+  const info_total_5euros = document.getElementById("info_total_5euros"); // Total dinero en billetes de 5 euros
+  const info_10euros = document.getElementById("info_10euros"); // Cantidad billetes 10 euros
+  const info_total_10euros = document.getElementById("info_total_10euros"); // Total dinero en billetes de 10 euros
+  const info_20euros = document.getElementById("info_20euros"); // Cantidad billetes 20 euros
+  const info_total_20euros = document.getElementById("info_total_20euros"); // Total dinero en billetes de 20 euros
+  const arqueo_total = document.getElementById("arqueo_total"); // Total arqueo
+  const boton_retirada_caja = document.getElementById("boton_retirada_caja") // Botón de retirada de caja
 
-// Lista articulos
-  const listaArticulos = [canhaObjeto];
+  // Conteo de caja si se está en la ventana de retiradas
+  if (window.location.href.includes("admin_panel_retiradas.html")) {
+    conteoCaja();
+    boton_retirada_caja.addEventListener("click", () => {
+      retiradaCaja();
+    })
+  } 
 
   // Pulsado de logo
   if (imagen_logo) {
@@ -114,54 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-  /*
-  // Función de registrado de teclas pulsadas en pantalla
-  function gestorTecla(valor) {
-    if (valor === "C") {
-      // Limpia la pantalla
-      if (
-        !entrada.includes("Crédito:") &&
-        !entrada.includes("Inserte") &&
-        !entrada.includes("Seleccione")
-      ) {
-        entrada = "Seleccione producto";
-        actualizarPantalla();
-      }
-    } else if (valor === "E") {
-      // Confirmar selección
-      if (entrada >= 1 && entrada <= 9) {
-        entrada = "";
-        entrada = "Procesando..." + entrada;
-        actualizarPantalla();
-        setTimeout(() => {
-          // Timeout de 2s
-          entrada = "Inserte crédito";
-          actualizarPantalla();
-        }, 2000);
-      } else {
-        entrada = "Producto inválido";
-        actualizarPantalla();
-        setTimeout(() => {
-          // Timeout de 2s
-          entrada = "Crédito: " + creditoInsertado.toFixed(2) + "€";
-          actualizarPantalla();
-        }, 2000);
-      }
-    } else {
-      // Añadir número a pantalla
-      if (
-        entrada.includes("Crédito:") ||
-        entrada.includes("Inserte") ||
-        entrada.includes("Seleccione")
-      ) {
-        // Si el crédito se estaba mostrando en pantalla se borra
-        entrada = "";
-      }
-      entrada += valor;
-      actualizarPantalla();
-    }
-  }
-  */
 
   function gestorTecla(valor) {
     // Añadir número a pantalla
@@ -177,14 +178,14 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarPantalla();
   }
 
-function comprobacionObjeto(entrada) {
-  for (const articulo of listaArticulos) {
-if (parseInt(articulo.numero) === parseInt(entrada)) {
-      return articulo.precio;
+  function comprobacionObjeto(entrada) {
+    for (const articulo of listaArticulos) {
+      if (parseInt(articulo.numero) === parseInt(entrada)) {
+        return articulo.precio;
+      }
     }
+    return "Producto inválido";
   }
-  return "Producto inválido";
-}
 
   // Actualización de pantalla
   function actualizarPantalla() {
@@ -195,5 +196,81 @@ if (parseInt(articulo.numero) === parseInt(entrada)) {
   function actualizarPantallaDialog() {
     entradaDialog = "Crédito: " + creditoInsertado.toFixed(2) + "€";
     pantalla_dialog.textContent = entradaDialog;
+  }
+
+  // Rellenado de datos del conteo de la caja
+  function conteoCaja() {
+    let total_caja = 0;
+
+    caja.forEach((moneda) => {
+      let cantidad = 0;
+
+      switch (moneda.tipoMoneda) {
+        case "5 Céntimos":
+          info_5cents.textContent = "x" + moneda.cantidadMoneda + " monedas ->";
+          cantidad = moneda.cantidadMoneda * 0.05;
+          info_total_5cents.textContent = cantidad.toFixed(2) + " €";
+          break;
+        case "10 Céntimos":
+          info_10cents.textContent =
+            "x" + moneda.cantidadMoneda + " monedas ->";
+          cantidad = moneda.cantidadMoneda * 0.1;
+          info_total_10cents.textContent = cantidad.toFixed(2) + " €";
+          break;
+        case "20 Céntimos":
+          info_20cents.textContent =
+            "x" + moneda.cantidadMoneda + " monedas ->";
+          cantidad = moneda.cantidadMoneda * 0.2;
+          info_total_20cents.textContent = cantidad.toFixed(2) + " €";
+          break;
+        case "50 Céntimos":
+          info_50cents.textContent =
+            "x" + moneda.cantidadMoneda + " monedas ->";
+          cantidad = moneda.cantidadMoneda * 0.5;
+          info_total_50cents.textContent = cantidad.toFixed(2) + " €";
+          break;
+        case "1 Euro":
+          info_1euro.textContent = "x" + moneda.cantidadMoneda + " monedas ->";
+          cantidad = moneda.cantidadMoneda * 1;
+          info_total_1euro.textContent = cantidad.toFixed(2) + " €";
+          break;
+        case "2 Euros":
+          info_2euros.textContent = "x" + moneda.cantidadMoneda + " monedas ->";
+          cantidad = moneda.cantidadMoneda * 2;
+          info_total_2euros.textContent = cantidad.toFixed(2) + " €";
+          break;
+        case "5 Euros":
+          info_5euros.textContent =
+            "x" + moneda.cantidadMoneda + " billetes ->";
+          cantidad = moneda.cantidadMoneda * 5;
+          info_total_5euros.textContent = cantidad.toFixed(2) + " €";
+          break;
+        case "10 Euros":
+          info_10euros.textContent =
+            "x" + moneda.cantidadMoneda + " billetes ->";
+          cantidad = moneda.cantidadMoneda * 10;
+          info_total_10euros.textContent = cantidad.toFixed(2) + " €";
+          break;
+        case "20 Euros":
+          info_20euros.textContent =
+            "x" + moneda.cantidadMoneda + " billetes ->";
+          cantidad = moneda.cantidadMoneda * 20;
+          info_total_20euros.textContent = cantidad.toFixed(2) + " €";
+          break;
+      }
+
+      total_caja += cantidad;
+    });
+    arqueo_total.textContent = total_caja.toFixed(2) + " €";
+  }
+
+  // Retirada de la caja
+  function retiradaCaja() {
+    caja.forEach(moneda => {
+      if (moneda.cantidadMoneda > 10) {
+        moneda.cantidadMoneda = 10;
+      }
+    });
+    conteoCaja();
   }
 });

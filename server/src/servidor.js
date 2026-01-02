@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./db.js";
 import rutas from "../rutas/itemRutas.js"
 import { SeeddingArticulos } from "../modelos/articulos.js";
+import { SeeddingCaja } from "../modelos/caja.js";
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ export async function startServer() {
   try {
     await connectDB();
     await SeeddingArticulos();
+    await SeeddingCaja();
 
     app.listen(PORT, () => {
       console.log(`API en http://localhost:${PORT}`);
