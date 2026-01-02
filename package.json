@@ -2,7 +2,7 @@
   "name": "vending_machine_ac",
   "version": "1.0.0",
   "description": "Máquina expendedora con Electron",
-  "main": "main.js",
+  "main": "cliente/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."

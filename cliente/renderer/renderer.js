@@ -17,15 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const botonesIngreso = document.querySelectorAll(".boton_ingreso"); // Conjunto ingreso efectivo
   const opcionesAdmin = document.querySelectorAll(".opciones_admin"); // Botones panel administrador
 
-  // Lista articulos
-  const listaArticulos = [canhaObjeto];
-
   // Artículos
   let canhaObjeto = {
     nombre: "Caña",
     numero: "01",
     precio: 10,
   };
+
+// Lista articulos
+  const listaArticulos = [canhaObjeto];
 
   // Pulsado de logo
   if (imagen_logo) {
@@ -161,17 +161,30 @@ document.addEventListener("DOMContentLoaded", () => {
       actualizarPantalla();
     }
   }
-  */  
+  */
 
-  function comprobacionObjeto(entrada) {
-    listaArticulos.forEach((articulo) => {
-      if (articulo.numero == entrada) {
-        return articulo.precio;
-      } else {
-        return "Producto inválido";
-      }
-    });
+  function gestorTecla(valor) {
+    // Añadir número a pantalla
+    if (
+      entrada.includes("Crédito:") ||
+      entrada.includes("Inserte") ||
+      entrada.includes("Seleccione")
+    ) {
+      // Si el crédito se estaba mostrando en pantalla se borra
+      entrada = "";
+    }
+    entrada += valor;
+    actualizarPantalla();
   }
+
+function comprobacionObjeto(entrada) {
+  for (const articulo of listaArticulos) {
+if (parseInt(articulo.numero) === parseInt(entrada)) {
+      return articulo.precio;
+    }
+  }
+  return "Producto inválido";
+}
 
   // Actualización de pantalla
   function actualizarPantalla() {
