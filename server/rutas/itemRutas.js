@@ -16,16 +16,18 @@ router.get("/caja", async (req, res) => {
   res.json(caja);
 });
 
-// Ruta actualizacion de articulos
+// Ruta actualizacion de stock
 router.put("/articulos/:numeroArticulo", async (req, res) => {
   try {
     const articuloActualizado = await Articulos.findOneAndUpdate(
       { numeroArticulo: Number(req.params.numeroArticulo) },
-      { stockArticulo: req.body.stockArticulo },
+      req.body,
       { new: true }
     );
     res.json(articuloActualizado);
-    console.log(`Artículo ${articuloActualizado.nobreArticulo} actualizado!: `);
+    console.log(
+      `Artículo ${articuloActualizado.nombreArticulo} actualizado!: `
+    );
     console.log(articuloActualizado);
   } catch (error) {
     console.log("Error al actualizar artículo!", error);
@@ -38,14 +40,14 @@ router.put("/caja", async (req, res) => {
   try {
     const monedas = req.body;
 
-    for (const [tipo, cantidad] of Object.entries(monedas)) {
+    for (const moneda of monedas) {
       await Caja.updateOne(
-        { tipoMoneda: tipo },
-        { cantidadMoneda: cantidad }
+        { tipoMoneda: moneda.tipoMoneda },
+        { cantidadMoneda: moneda.cantidadMoneda }
       );
     }
-
     res.json({ message: "Caja actualizada correctamente" });
+    console.log("Caja actualizada!");
   } catch (error) {
     console.error("Error al actualizar caja:", error);
     res.status(500).json({ message: "Error al actualizar caja" });

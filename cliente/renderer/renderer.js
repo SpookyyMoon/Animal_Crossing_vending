@@ -13,19 +13,17 @@ async function obtenerArticulos() {
 }
 
 // Función de guardado de stock
-async function guardarStock(numeroArticulo, nuevoStock) {
+async function guardarArticulo(numeroArticulo, datos) {
   try {
     await fetch(`${BASE_URL}/articulos/${numeroArticulo}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        stockArticulo: nuevoStock,
-      }),
+      body: JSON.stringify(datos),
     });
   } catch (error) {
-    console.error("Error guardando stock", error);
+    console.error("Error guardando artículo", error);
   }
 }
 
@@ -38,6 +36,21 @@ async function obtenerCaja() {
     return caja;
   } catch (err) {
     console.error(err);
+  }
+}
+
+// Función para guardar la caja
+async function guardarCaja(caja) {
+  try {
+    await fetch(`${BASE_URL}/caja`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(caja),
+    });
+  } catch (error) {
+    console.error("Error guardando caja", error);
   }
 }
 
@@ -96,6 +109,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stockFloresBlancas = document.getElementById("stockFloresBlancas");
   const stockFloresAmarillas = document.getElementById("stockFloresAmarillas");
 
+  // Elementos panel precio
+  const precioCanha = document.getElementById("precioCanha");
+  const precioRed = document.getElementById("precioRed");
+  const precioRegadera = document.getElementById("precioRegadera");
+  const precioMadera = document.getElementById("precioMadera");
+  const precioMaderaDura = document.getElementById("precioMaderaDura");
+  const precioMaderaFlexible = document.getElementById("precioMaderaFlexible");
+  const precioFloresRojas = document.getElementById("precioFloresRojas");
+  const precioFloresBlancas = document.getElementById("precioFloresBlancas");
+  const precioFloresAmarillas = document.getElementById(
+    "precioFloresAmarillas"
+  );
+
   // Conteo de caja si se está en la ventana de retiradas
   if (window.location.href.includes("admin_panel_retiradas.html")) {
     conteoCaja();
@@ -107,6 +133,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Conteo de stock si está en la ventana de stock
   if (window.location.href.includes("admin_panel_stock.html")) {
     conteoStock();
+  }
+
+  // Set de precios si está en la ventana de precios
+  if (window.location.href.includes("admin_panel_precio.html")) {
+    setPrecios();
   }
 
   // Pulsado de logo
@@ -312,6 +343,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         moneda.cantidadMoneda = 0;
       }
     });
+    guardarCaja(caja);
     conteoCaja();
   }
 
@@ -322,70 +354,153 @@ document.addEventListener("DOMContentLoaded", async () => {
         case "Caña":
           stockCanha.value = articulo.stockArticulo;
           stockCanha.addEventListener("change", () => {
-            guardarStock(articulo.numeroArticulo, Number(stockCanha.value));
+            guardarArticulo(articulo.numeroArticulo, {
+              stockArticulo: Number(stockCanha.value),
+            });
           });
           break;
         case "Red":
           stockRed.value = articulo.stockArticulo;
           stockRed.addEventListener("change", () => {
-            guardarStock(articulo.numeroArticulo, Number(stockRed.value));
+            guardarArticulo(articulo.numeroArticulo, {
+              stockArticulo: Number(stockRed.value),
+            });
           });
           break;
         case "Regadera":
           stockRegadera.value = articulo.stockArticulo;
           stockRegadera.addEventListener("change", () => {
-            guardarStock(articulo.numeroArticulo, Number(stockRegadera.value));
+            guardarArticulo(articulo.numeroArticulo, {
+              stockArticulo: Number(stockRegadera.value),
+            });
           });
           break;
         case "Madera":
           stockMadera.value = articulo.stockArticulo;
           stockMadera.addEventListener("change", () => {
-            guardarStock(articulo.numeroArticulo, Number(stockMadera.value));
+            guardarArticulo(articulo.numeroArticulo, {
+              stockArticulo: Number(stockMadera.value),
+            });
           });
           break;
         case "Madera dura":
           stockMaderaDura.value = articulo.stockArticulo;
           stockMaderaDura.addEventListener("change", () => {
-            guardarStock(
-              articulo.numeroArticulo,
-              Number(stockMaderaDura.value)
-            );
+            guardarArticulo(articulo.numeroArticulo, {
+              stockArticulo: Number(stockMaderaDura.value),
+            });
           });
           break;
         case "Madera flexible":
           stockMaderaFlexible.value = articulo.stockArticulo;
           stockMaderaFlexible.addEventListener("change", () => {
-            guardarStock(
-              articulo.numeroArticulo,
-              Number(stockMaderaFlexible.value)
-            );
+            guardarArticulo(articulo.numeroArticulo, {
+              stockArticulo: Number(stockMaderaFlexible.value),
+            });
           });
           break;
         case "Flores rojas":
           stockFloresRojas.value = articulo.stockArticulo;
           stockFloresRojas.addEventListener("change", () => {
-            guardarStock(
-              articulo.numeroArticulo,
-              Number(stockFloresRojas.value)
-            );
+            guardarArticulo(articulo.numeroArticulo, {
+              stockArticulo: Number(stockFloresRojas.value),
+            });
           });
           break;
         case "Flores blancas":
           stockFloresBlancas.value = articulo.stockArticulo;
           stockFloresBlancas.addEventListener("change", () => {
-            guardarStock(
-              articulo.numeroArticulo,
-              Number(stockFloresBlancas.value)
-            );
+            guardarArticulo(articulo.numeroArticulo, {
+              stockArticulo: Number(stockFloresBlancas.value),
+            });
           });
           break;
         case "Flores amarillas":
           stockFloresAmarillas.value = articulo.stockArticulo;
           stockFloresAmarillas.addEventListener("change", () => {
-            guardarStock(
-              articulo.numeroArticulo,
-              Number(stockFloresAmarillas.value)
-            );
+            guardarArticulo(articulo.numeroArticulo, {
+              stockArticulo: Number(stockFloresAmarillas.value),
+            });
+          });
+          break;
+      }
+    });
+  }
+
+  // Seteo precios
+  function setPrecios() {
+    articulos.forEach((articulo) => {
+      switch (articulo.nombreArticulo) {
+        case "Caña":
+          precioCanha.value = articulo.precioArticulo;
+          precioCanha.addEventListener("change", () => {
+            guardarArticulo(articulo.numeroArticulo, {
+              precioArticulo: Number(precioCanha.value),
+            });
+          });
+          break;
+        case "Red":
+          precioRed.value = articulo.precioArticulo;
+          precioRed.addEventListener("change", () => {
+            guardarArticulo(articulo.numeroArticulo, {
+              precioArticulo: Number(precioRed.value),
+            });
+          });
+          break;
+        case "Regadera":
+          precioRegadera.value = articulo.precioArticulo;
+          precioRegadera.addEventListener("change", () => {
+            guardarArticulo(articulo.numeroArticulo, {
+              precioArticulo: Number(precioRegadera.value),
+            });
+          });
+          break;
+        case "Madera":
+          precioMadera.value = articulo.precioArticulo;
+          precioMadera.addEventListener("change", () => {
+            guardarArticulo(articulo.numeroArticulo, {
+              precioArticulo: Number(precioMadera.value),
+            });
+          });
+          break;
+        case "Madera dura":
+          precioMaderaDura.value = articulo.precioArticulo;
+          precioMaderaDura.addEventListener("change", () => {
+            guardarArticulo(articulo.numeroArticulo, {
+              precioArticulo: Number(precioMaderaDura.value),
+            });
+          });
+          break;
+        case "Madera flexible":
+          precioMaderaFlexible.value = articulo.precioArticulo;
+          precioMaderaFlexible.addEventListener("change", () => {
+            guardarArticulo(articulo.numeroArticulo, {
+              precioArticulo: Number(precioMaderaFlexible.value),
+            });
+          });
+          break;
+        case "Flores rojas":
+          precioFloresRojas.value = articulo.precioArticulo;
+          precioFloresRojas.addEventListener("change", () => {
+            guardarArticulo(articulo.numeroArticulo, {
+              precioArticulo: Number(precioFloresRojas.value),
+            });
+          });
+          break;
+        case "Flores blancas":
+          precioFloresBlancas.value = articulo.precioArticulo;
+          precioFloresBlancas.addEventListener("change", () => {
+            guardarArticulo(articulo.numeroArticulo, {
+              precioArticulo: Number(precioFloresBlancas.value),
+            });
+          });
+          break;
+        case "Flores amarillas":
+          precioFloresAmarillas.value = articulo.precioArticulo;
+          precioFloresAmarillas.addEventListener("change", () => {
+            guardarArticulo(articulo.numeroArticulo, {
+              precioArticulo: Number(precioFloresAmarillas.value),
+            });
           });
           break;
       }
