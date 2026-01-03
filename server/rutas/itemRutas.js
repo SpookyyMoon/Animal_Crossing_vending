@@ -25,7 +25,7 @@ router.put("/articulos/:numeroArticulo", async (req, res) => {
       { new: true }
     );
     res.json(articuloActualizado);
-    console.log(`Artículo ${articuloActualizado.nombreArticulo} actualizado!: `);
+    console.log(`Artículo ${articuloActualizado.nobreArticulo} actualizado!: `);
     console.log(articuloActualizado);
   } catch (error) {
     console.log("Error al actualizar artículo!", error);
