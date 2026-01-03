@@ -12,6 +12,23 @@ async function obtenerArticulos() {
   }
 }
 
+// Función de guardado de stock
+async function guardarStock(numeroArticulo, nuevoStock) {
+  try {
+    await fetch(`${BASE_URL}/articulos/${numeroArticulo}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        stockArticulo: nuevoStock,
+      }),
+    });
+  } catch (error) {
+    console.error("Error guardando stock", error);
+  }
+}
+
 // Función para obtener la caja completa
 async function obtenerCaja() {
   try {
@@ -47,34 +64,50 @@ document.addEventListener("DOMContentLoaded", async () => {
   const opcionesAdmin = document.querySelectorAll(".opciones_admin"); // Botones panel administrador
 
   // Elementos panel retiradas
-  const info_5cents = document.getElementById("info_5cents"); // Cantidad monedas 5 céntimos
-  const info_total_5cents = document.getElementById("info_total_5cents"); // Total dinero en monedas de 5 céntimos
-  const info_10cents = document.getElementById("info_10cents"); // Cantidad monedas 10 céntimos
-  const info_total_10cents = document.getElementById("info_total_10cents"); // Total dinero en monedas de 10 céntimos
-  const info_20cents = document.getElementById("info_20cents"); // Cantidad monedas 20 céntimos
-  const info_total_20cents = document.getElementById("info_total_20cents"); // Total dinero en monedas de 20 céntimos
-  const info_50cents = document.getElementById("info_50cents"); // Cantidad monedas 50 céntimos
-  const info_total_50cents = document.getElementById("info_total_50cents"); // Total dinero en monedas de 50 céntimos
-  const info_1euro = document.getElementById("info_1euro"); // Cantidad monedas 1 euro
-  const info_total_1euro = document.getElementById("info_total_1euro"); // Total dinero en monedas de 1 euro
-  const info_2euros = document.getElementById("info_2euros"); // Cantidad monedas 2 euros
-  const info_total_2euros = document.getElementById("info_total_2euros"); // Total dinero en monedas de 2 euros
-  const info_5euros = document.getElementById("info_5euros"); // Cantidad billetes 5 euros
-  const info_total_5euros = document.getElementById("info_total_5euros"); // Total dinero en billetes de 5 euros
-  const info_10euros = document.getElementById("info_10euros"); // Cantidad billetes 10 euros
-  const info_total_10euros = document.getElementById("info_total_10euros"); // Total dinero en billetes de 10 euros
-  const info_20euros = document.getElementById("info_20euros"); // Cantidad billetes 20 euros
-  const info_total_20euros = document.getElementById("info_total_20euros"); // Total dinero en billetes de 20 euros
-  const arqueo_total = document.getElementById("arqueo_total"); // Total arqueo
-  const boton_retirada_caja = document.getElementById("boton_retirada_caja") // Botón de retirada de caja
+  const info_5cents = document.getElementById("info_5cents"); // Total moneda X
+  const info_total_5cents = document.getElementById("info_total_5cents"); // Total dinero en monedas X
+  const info_10cents = document.getElementById("info_10cents");
+  const info_total_10cents = document.getElementById("info_total_10cents");
+  const info_20cents = document.getElementById("info_20cents");
+  const info_total_20cents = document.getElementById("info_total_20cents");
+  const info_50cents = document.getElementById("info_50cents");
+  const info_total_50cents = document.getElementById("info_total_50cents");
+  const info_1euro = document.getElementById("info_1euro");
+  const info_total_1euro = document.getElementById("info_total_1euro");
+  const info_2euros = document.getElementById("info_2euros");
+  const info_total_2euros = document.getElementById("info_total_2euros");
+  const info_5euros = document.getElementById("info_5euros");
+  const info_total_5euros = document.getElementById("info_total_5euros");
+  const info_10euros = document.getElementById("info_10euros");
+  const info_total_10euros = document.getElementById("info_total_10euros");
+  const info_20euros = document.getElementById("info_20euros");
+  const info_total_20euros = document.getElementById("info_total_20euros");
+  const arqueo_total = document.getElementById("arqueo_total");
+  const boton_retirada_caja = document.getElementById("boton_retirada_caja");
+
+  // Elementos panel stock
+  const stockCanha = document.getElementById("stockCanha");
+  const stockRed = document.getElementById("stockRed");
+  const stockRegadera = document.getElementById("stockRegadera");
+  const stockMadera = document.getElementById("stockMadera");
+  const stockMaderaDura = document.getElementById("stockMaderaDura");
+  const stockMaderaFlexible = document.getElementById("stockMaderaFlexible");
+  const stockFloresRojas = document.getElementById("stockFloresRojas");
+  const stockFloresBlancas = document.getElementById("stockFloresBlancas");
+  const stockFloresAmarillas = document.getElementById("stockFloresAmarillas");
 
   // Conteo de caja si se está en la ventana de retiradas
   if (window.location.href.includes("admin_panel_retiradas.html")) {
     conteoCaja();
     boton_retirada_caja.addEventListener("click", () => {
       retiradaCaja();
-    })
-  } 
+    });
+  }
+
+  // Conteo de stock si está en la ventana de stock
+  if (window.location.href.includes("admin_panel_stock.html")) {
+    conteoStock();
+  }
 
   // Pulsado de logo
   if (imagen_logo) {
@@ -266,11 +299,96 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Retirada de la caja
   function retiradaCaja() {
-    caja.forEach(moneda => {
-      if (moneda.cantidadMoneda > 10) {
-        moneda.cantidadMoneda = 10;
+    caja.forEach((moneda) => {
+      if (
+        moneda.tipoMoneda != "5 Euros" &&
+        moneda.tipoMoneda != "10 Euros" &&
+        moneda.tipoMoneda != "20 Euros"
+      ) {
+        if (moneda.cantidadMoneda > 20) {
+          moneda.cantidadMoneda = 20;
+        }
+      } else {
+        moneda.cantidadMoneda = 0;
       }
     });
     conteoCaja();
+  }
+
+  // Conteo del stock
+  function conteoStock() {
+    articulos.forEach((articulo) => {
+      switch (articulo.nombreArticulo) {
+        case "Caña":
+          stockCanha.value = articulo.stockArticulo;
+          stockCanha.addEventListener("change", () => {
+            guardarStock(articulo.numeroArticulo, Number(stockCanha.value));
+          });
+          break;
+        case "Red":
+          stockRed.value = articulo.stockArticulo;
+          stockRed.addEventListener("change", () => {
+            guardarStock(articulo.numeroArticulo, Number(stockRed.value));
+          });
+          break;
+        case "Regadera":
+          stockRegadera.value = articulo.stockArticulo;
+          stockRegadera.addEventListener("change", () => {
+            guardarStock(articulo.numeroArticulo, Number(stockRegadera.value));
+          });
+          break;
+        case "Madera":
+          stockMadera.value = articulo.stockArticulo;
+          stockMadera.addEventListener("change", () => {
+            guardarStock(articulo.numeroArticulo, Number(stockMadera.value));
+          });
+          break;
+        case "Madera dura":
+          stockMaderaDura.value = articulo.stockArticulo;
+          stockMaderaDura.addEventListener("change", () => {
+            guardarStock(
+              articulo.numeroArticulo,
+              Number(stockMaderaDura.value)
+            );
+          });
+          break;
+        case "Madera flexible":
+          stockMaderaFlexible.value = articulo.stockArticulo;
+          stockMaderaFlexible.addEventListener("change", () => {
+            guardarStock(
+              articulo.numeroArticulo,
+              Number(stockMaderaFlexible.value)
+            );
+          });
+          break;
+        case "Flores rojas":
+          stockFloresRojas.value = articulo.stockArticulo;
+          stockFloresRojas.addEventListener("change", () => {
+            guardarStock(
+              articulo.numeroArticulo,
+              Number(stockFloresRojas.value)
+            );
+          });
+          break;
+        case "Flores blancas":
+          stockFloresBlancas.value = articulo.stockArticulo;
+          stockFloresBlancas.addEventListener("change", () => {
+            guardarStock(
+              articulo.numeroArticulo,
+              Number(stockFloresBlancas.value)
+            );
+          });
+          break;
+        case "Flores amarillas":
+          stockFloresAmarillas.value = articulo.stockArticulo;
+          stockFloresAmarillas.addEventListener("change", () => {
+            guardarStock(
+              articulo.numeroArticulo,
+              Number(stockFloresAmarillas.value)
+            );
+          });
+          break;
+      }
+    });
   }
 });

@@ -440,11 +440,12 @@ body {
   width: 30%;
   margin: 0em;
   margin-top: 0.5em;
-  margin-right: 0.5em;
+  margin-right: 1em;
   border-radius: 0.5em;
   background-color: white;
   border: solid #BEB6B6 0.15em;
   cursor: text;
+  text-align: center;
 }
 
 /* Retirada */

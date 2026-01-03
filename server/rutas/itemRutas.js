@@ -17,15 +17,15 @@ router.get("/caja", async (req, res) => {
 });
 
 // Ruta actualizacion de articulos
-router.put("/comandas/:numeroArticulo", async (req, res) => {
+router.put("/articulos/:numeroArticulo", async (req, res) => {
   try {
-    const articuloActualizado = await Articulos.findByIdAndUpdate(
-      req.params.numeroArticulo,
-      req.body,
+    const articuloActualizado = await Articulos.findOneAndUpdate(
+      { numeroArticulo: Number(req.params.numeroArticulo) },
+      { stockArticulo: req.body.stockArticulo },
       { new: true }
     );
     res.json(articuloActualizado);
-    console.log(`Artículo ${articuloActualizado.nonbreArticulo} actualizado!: `);
+    console.log(`Artículo ${articuloActualizado.nombreArticulo} actualizado!: `);
     console.log(articuloActualizado);
   } catch (error) {
     console.log("Error al actualizar artículo!", error);
