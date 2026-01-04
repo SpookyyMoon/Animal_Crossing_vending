@@ -11,12 +11,12 @@
 
 html {
   height: 100%;
-  font-size: 6.5px;
+  font-size: 5px;
 }
 
-@media (min-width: 2560px) {
+@media (min-width: 2500px) {
   html {
-    font-size: 14px;
+    font-size: 6.5px;
   }
 }
 
@@ -52,14 +52,8 @@ body {
 }
 
 #imagen_logo {
-  width: 80em;
+  width: 50%;
   cursor: pointer;
-}
-
-@media (min-width: 2560px) {
-  #imagen_logo {
-    width: 72em;
-  }
 }
 
 /* Contenedor vending */
@@ -126,12 +120,6 @@ body {
   margin-bottom: -1.3em;
   z-index: 1; /* Coloca el logo sobre el resto de elementos del eje Z */
   font-family: Humming;
-}
-
-@media (min-width: 2560px) {
-  .precio_item {
-    font-size: 6.5em;
-  }
 }
 
 /* Contenedor panel */
@@ -277,18 +265,19 @@ body {
 #pantalla_dialog {
     margin-top: 1em;
     width: 50%;
-    height: 25%;
+    height: 20%;
 }
 
 #contenedor_botones_ingreso {
-    margin-top: 7em;
+    margin-top: 5%;
     height: 50%;
     width: 90%;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
-    grid-column-gap:10em;
-    grid-row-gap: 3em;
+    grid-column-gap: 3%;
+    grid-row-gap: 7%;
+    justify-content: center;
 }
 
 .boton_ingreso {
@@ -316,7 +305,7 @@ body {
 }
 
 #eur_5 img, #eur_10 img, #eur_20 img{
-    width: 13em;
+    width: 20%;
     margin-left: 2em;
 }
 
