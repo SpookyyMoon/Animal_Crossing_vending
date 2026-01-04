@@ -231,21 +231,62 @@ document.addEventListener("DOMContentLoaded", async () => {
   function gestorTecla(valor) {
     // Añadir número a pantalla
     if (
+      entrada.includes("¡Bienvenido!") ||
       entrada.includes("Crédito:") ||
       entrada.includes("Inserte") ||
-      entrada.includes("Seleccione")
+      entrada.includes("Seleccione") ||
+      entrada.includes("Producto inválido")
     ) {
       // Si el crédito se estaba mostrando en pantalla se borra
       entrada = "";
+      entrada += valor;
+      actualizarPantalla();
+    } else if (valor == "C" && creditoInsertado == 0) {
+      entrada = "Inserte crédito...";
+      actualizarPantalla();
+    } else if (valor == "C" && creditoInsertado != 0) {
+      entrada = "Seleccione producto...";
+      actualizarPantalla();  
+    } else if (valor == "E") {
+      if (comprobacionObjeto(entrada) == "Producto inválido") {
+        entrada = "Producto inválido";
+        actualizarPantalla();
+      } else {
+        let precioArticulo = comprobacionObjeto(entrada);
+        if (precioArticulo > creditoInsertado) {
+          entrada = "Precio: " + precioArticulo + "€";
+          actualizarPantalla();
+          setTimeout(() => {
+            // Timeout de 3s
+            entrada = "Crédito: " + creditoInsertado + "€";
+            actualizarPantalla();
+          }, 3000);
+        } else {
+          entrada = "Procesando...";
+          actualizarPantalla();
+          setTimeout(() => {
+            // Timeout de 3s
+            entrada = "Recoja su producto";
+            actualizarPantalla();
+            setTimeout(() => {
+              // Timeout de 3s
+              entrada = "¡Bienvenido!";
+              actualizarPantalla();
+            }, 3000);
+          }, 3000);
+        }
+      }
+    } else if (entrada == "Recoja su producto" || entrada == "Procesando...") {
+    } else {
+      entrada += valor;
+      actualizarPantalla();
     }
-    entrada += valor;
-    actualizarPantalla();
   }
 
   function comprobacionObjeto(entrada) {
-    for (const articulo of listaArticulos) {
-      if (parseInt(articulo.numero) === parseInt(entrada)) {
-        return articulo.precio;
+    for (const articulo of articulos) {
+      if (parseInt(articulo.numeroArticulo) == parseInt(entrada)) {
+        return articulo.precioArticulo;
       }
     }
     return "Producto inválido";
