@@ -58,6 +58,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const articulos = await obtenerArticulos();
   const caja = await obtenerCaja();
 
+  // Asignación del valor de las monedas existentes en la base de datos
+  const VALOR_MONEDAS = {
+    "20 Euros": 20,
+    "10 Euros": 10,
+    "5 Euros": 5,
+    "2 Euros": 2,
+    "1 Euro": 1,
+    "50 Céntimos": 0.5,
+    "20 Céntimos": 0.2,
+    "10 Céntimos": 0.1,
+    "5 Céntimos": 0.05,
+  };
+
   // Variables
   let entrada = "";
   let entradaDialog = "";
@@ -246,7 +259,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       actualizarPantalla();
     } else if (valor == "C" && creditoInsertado != 0) {
       entrada = "Seleccione producto...";
-      actualizarPantalla();  
+      actualizarPantalla();
     } else if (valor == "E") {
       if (comprobacionObjeto(entrada) == "Producto inválido") {
         entrada = "Producto inválido";
@@ -546,5 +559,57 @@ document.addEventListener("DOMContentLoaded", async () => {
           break;
       }
     });
+  }
+
+  function calculoDevolucion(precio) {
+    const cajaOrdenada = [...caja].sort(
+      // Ordenación de la caja de mayor a menor
+      (a, b) => VALOR_MONEDAS[b.tipoMoneda] - VALOR_MONEDAS[a.tipoMoneda]
+    );
+
+    const devolucionCantidad = creditoInsertado - precio; // Cantidad total a devolver
+    let conteoCambioDevolver = 0; // Almacenamiento del cambio ya separado para devolverse
+    let cambioDevolver = []; // Monedas ya separadas para devolverse
+
+    while (conteoCambioDevolver < devolucionCantidad) {
+      // Si la devolución no está completa o es 0, se inicia el bucle o se continua
+      for (const moneda of cajaOrdenada) {
+        // Se recorren las monedas de la caja y se registra su tipo de moneda y valor
+        const valorMoneda = VALOR_MONEDAS[moneda.tipoMoneda];
+        const cantidadMonedas = moneda.cantidadMoneda;
+
+        if (valorMoneda + conteoCambioDevolver < devolucionCantidad) {
+          // Si la moneda (Sumando a la ya añadido previamente en caso de existir) vale menos que la devolución
+          if (cantidadMonedas * valorMoneda < devolucionCantidad) {
+            // Si el valor del total de monedas de X tipo es menor que la devolución se entrega el máximo posible de monedas
+            conteoCambioDevolver += cantidadMonedas * valorMoneda; // Se registra su valor en el conteo
+            for (let i = 0; i < cantidadMonedas; i++) {
+              cambioDevolver.push(moneda.tipoMoneda); // Se almacen en el array las monedas
+            }
+            moneda.cantidadMoneda -= cantidadMonedas; // Se restan las monedas de la caja
+          } else if (cantidadMonedas * valorMoneda == devolucionCantidad) {
+            conteoCambioDevolver += cantidadMonedas * valorMoneda; // Se registra su valor en el conteo
+            for (let i = 0; i < cantidadMonedas; i++) {
+              cambioDevolver.push(moneda.tipoMoneda); // Se almacen en el array las monedas
+            }
+            moneda.cantidadMoneda -= cantidadMonedas; // Se restan las monedas de la caja
+          } else {
+            let numeroMonedasUsar = Math.floor(
+              (devolucionCantidad - conteoCambioDevolver) / valorMoneda
+            ); // Se calcula la cantidad mínima de monedas necesarias para devolver el cambio
+            conteoCambioDevolver += numeroMonedasUsar * valorMoneda;
+            for (let i = 0; i < numeroMonedasUsar; i++) {
+              cambioDevolver.push(moneda.tipoMoneda); // Se almacen en el array las monedas
+            }
+            moneda.cantidadMoneda -= numeroMonedasUsar; // Se restan las monedas de la caja
+          }
+        } else if (valorMoneda + conteoCambioDevolver == devolucionCantidad) {
+          // Si la moneda (Sumando a la ya añadido previamente en caso de existir) es igual a la devolución se añade esa única moneda
+          conteoCambioDevolver += valorMoneda;
+          cambioDevolver.push(moneda.tipoMoneda);
+          moneda.cantidadMoneda -= 1;
+        }
+      }
+    }
   }
 });
