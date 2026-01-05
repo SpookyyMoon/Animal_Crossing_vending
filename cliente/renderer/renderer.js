@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let entrada = "";
   let entradaDialog = "";
   let creditoInsertado = 0;
+  let monedasInsertadas = [];
 
   // Elementos por ID
   const pantalla = document.getElementById("pantalla");
@@ -203,6 +204,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (idBoton === "boton1" && overlay) {
           overlay.classList.remove("hidden");
           overlay.classList.add("unhidden");
+        } else if (idBoton === "boton2") {
+          if (creditoInsertado > 0) {
+            creditoInsertado = 0;
+            monedasInsertadas = [];
+            entrada = "Devolviendo crédito..."
+            actualizarPantalla();
+            actualizarPantallaDialog();
+            setTimeout(() => {
+              entrada = "¡Bienvenido!";
+              actualizarPantalla();
+            }, 3000);
+          }
         } else if (idBoton === "boton3") {
           window.location.href = "./admin_panel_stock.html";
         }
@@ -218,22 +231,31 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (idBoton === "cents_5") {
           creditoInsertado += 0.05;
+          monedasInsertadas.push("5 Céntimos");
         } else if (idBoton === "cents_10") {
           creditoInsertado += 0.1;
+          monedasInsertadas.push("10 Céntimos");
         } else if (idBoton === "cents_20") {
           creditoInsertado += 0.2;
+          monedasInsertadas.push("20 Céntimos");
         } else if (idBoton === "cents_50") {
           creditoInsertado += 0.5;
+          monedasInsertadas.push("50 Céntimos");
         } else if (idBoton === "eur_1") {
           creditoInsertado += 1;
+          monedasInsertadas.push("1 Euro");
         } else if (idBoton === "eur_2") {
           creditoInsertado += 2;
+          monedasInsertadas.push("2 Euros");
         } else if (idBoton === "eur_5") {
           creditoInsertado += 5;
+          monedasInsertadas.push("5 Euros");
         } else if (idBoton === "eur_10") {
           creditoInsertado += 10;
+          monedasInsertadas.push("10 Euros");
         } else if (idBoton === "eur_20") {
           creditoInsertado += 20;
+          monedasInsertadas.push("20 Euros");
         }
 
         actualizarPantallaDialog();
@@ -265,6 +287,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         entrada = "Producto inválido";
         actualizarPantalla();
       } else {
+        let articuloCodigo = entrada;
         let precioArticulo = comprobacionObjeto(entrada);
         if (precioArticulo > creditoInsertado) {
           entrada = "Precio: " + precioArticulo + "€";
@@ -277,6 +300,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
           entrada = "Procesando...";
           actualizarPantalla();
+          entregarArticulo(articuloCodigo);
           setTimeout(() => {
             // Timeout de 3s
             entrada = "Recoja su producto";
@@ -582,7 +606,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ); // Variable que almacena cuanto queda por devolver en cada momento
 
       if (valorMoneda <= pendienteDevolucion && cantidadMonedas > 0) {
-        let numeroMonedasUsar = Math.floor(pendiente / valorMoneda); // Si el valor de la moneda es menor o igual al valor pendiente de devolución y existen monedas de ese tipo se calcular el mínimo posible a usar
+        let numeroMonedasUsar = Math.floor(pendienteDevolucion / valorMoneda); // Si el valor de la moneda es menor o igual al valor pendiente de devolución y existen monedas de ese tipo se calcular el mínimo posible a usar
 
         if (numeroMonedasUsar > cantidadMonedas) {
           // Si se necesitan más monedas de las existentes se usan todas las que existen
@@ -610,5 +634,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     return cambioDevolver;
+  }
+
+  function entregarArticulo(articuloCodigo) {
+    for (const articulo of articulos) {
+      if (parseInt(articulo.numeroArticulo) == parseInt(articuloCodigo)) {
+        articulo.stockArticulo -= 1;
+        calculoDevolucion(articulo.precio);
+      }
+    }
   }
 });
