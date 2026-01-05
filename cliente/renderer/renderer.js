@@ -566,50 +566,49 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Ordenación de la caja de mayor a menor
       (a, b) => VALOR_MONEDAS[b.tipoMoneda] - VALOR_MONEDAS[a.tipoMoneda]
     );
+    const cajaBackup = cajaOrdenada.map((m) => ({ ...m }));
 
-    const devolucionCantidad = creditoInsertado - precio; // Cantidad total a devolver
+    const devolucionCantidad = Number(creditoInsertado - precio); // Cantidad total a devolver
     let conteoCambioDevolver = 0; // Almacenamiento del cambio ya separado para devolverse
     let cambioDevolver = []; // Monedas ya separadas para devolverse
 
-    while (conteoCambioDevolver < devolucionCantidad) {
-      // Si la devolución no está completa o es 0, se inicia el bucle o se continua
-      for (const moneda of cajaOrdenada) {
-        // Se recorren las monedas de la caja y se registra su tipo de moneda y valor
-        const valorMoneda = VALOR_MONEDAS[moneda.tipoMoneda];
-        const cantidadMonedas = moneda.cantidadMoneda;
+    for (const moneda of cajaOrdenada) {
+      // Se recorren las monedas de la caja y se registra su tipo de moneda y valor
+      const valorMoneda = VALOR_MONEDAS[moneda.tipoMoneda];
+      let cantidadMonedas = moneda.cantidadMoneda;
 
-        if (valorMoneda + conteoCambioDevolver < devolucionCantidad) {
-          // Si la moneda (Sumando a la ya añadido previamente en caso de existir) vale menos que la devolución
-          if (cantidadMonedas * valorMoneda < devolucionCantidad) {
-            // Si el valor del total de monedas de X tipo es menor que la devolución se entrega el máximo posible de monedas
-            conteoCambioDevolver += cantidadMonedas * valorMoneda; // Se registra su valor en el conteo
-            for (let i = 0; i < cantidadMonedas; i++) {
-              cambioDevolver.push(moneda.tipoMoneda); // Se almacen en el array las monedas
-            }
-            moneda.cantidadMoneda -= cantidadMonedas; // Se restan las monedas de la caja
-          } else if (cantidadMonedas * valorMoneda == devolucionCantidad) {
-            conteoCambioDevolver += cantidadMonedas * valorMoneda; // Se registra su valor en el conteo
-            for (let i = 0; i < cantidadMonedas; i++) {
-              cambioDevolver.push(moneda.tipoMoneda); // Se almacen en el array las monedas
-            }
-            moneda.cantidadMoneda -= cantidadMonedas; // Se restan las monedas de la caja
-          } else {
-            let numeroMonedasUsar = Math.floor(
-              (devolucionCantidad - conteoCambioDevolver) / valorMoneda
-            ); // Se calcula la cantidad mínima de monedas necesarias para devolver el cambio
-            conteoCambioDevolver += numeroMonedasUsar * valorMoneda;
-            for (let i = 0; i < numeroMonedasUsar; i++) {
-              cambioDevolver.push(moneda.tipoMoneda); // Se almacen en el array las monedas
-            }
-            moneda.cantidadMoneda -= numeroMonedasUsar; // Se restan las monedas de la caja
-          }
-        } else if (valorMoneda + conteoCambioDevolver == devolucionCantidad) {
-          // Si la moneda (Sumando a la ya añadido previamente en caso de existir) es igual a la devolución se añade esa única moneda
-          conteoCambioDevolver += valorMoneda;
-          cambioDevolver.push(moneda.tipoMoneda);
-          moneda.cantidadMoneda -= 1;
+      let pendienteDevolucion = Number(
+        (devolucionCantidad - conteoCambioDevolver).toFixed(2)
+      ); // Variable que almacena cuanto queda por devolver en cada momento
+
+      if (valorMoneda <= pendienteDevolucion && cantidadMonedas > 0) {
+        let numeroMonedasUsar = Math.floor(pendiente / valorMoneda); // Si el valor de la moneda es menor o igual al valor pendiente de devolución y existen monedas de ese tipo se calcular el mínimo posible a usar
+
+        if (numeroMonedasUsar > cantidadMonedas) {
+          // Si se necesitan más monedas de las existentes se usan todas las que existen
+          numeroMonedasUsar = cantidadMonedas;
         }
+
+        conteoCambioDevolver = Number(
+          (conteoCambioDevolver + numeroMonedasUsar * valorMoneda).toFixed(2)
+        ); // Se registra el cambio ya devuelto
+
+        for (let i = 0; i < numeroMonedasUsar; i++) {
+          // Se añaden a la lista de monedas usadas para el cambio la moneda tantas veces como se haya usado
+          cambioDevolver.push(moneda.tipoMoneda);
+        }
+
+        moneda.cantidadMoneda -= numeroMonedasUsar; // Se restan las monedas de la caja
       }
     }
+    if (conteoCambioDevolver < devolucionCantidad) {
+      // No hay cambio suficiente (Añadir devolución de dinero)
+      cajaBackup.forEach((monedaGuardada, index) => {
+        cajaOrdenada[index].cantidadMoneda = monedaGuardada.cantidadMoneda; // Se restaura la caja desde el backup
+      });
+      return null;
+    }
+
+    return cambioDevolver;
   }
 });
