@@ -286,6 +286,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (comprobacionObjeto(entrada) == "Producto inválido") {
         entrada = "Producto inválido";
         actualizarPantalla();
+      } else if (comprobacionObjeto(entrada) == "Artículo sin stock") {
+        entrada = "Artículo sin stock";
+        actualizarPantalla();
       } else {
         let articuloCodigo = entrada;
         let precioArticulo = comprobacionObjeto(entrada);
@@ -323,6 +326,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   function comprobacionObjeto(entrada) {
     for (const articulo of articulos) {
       if (parseInt(articulo.numeroArticulo) == parseInt(entrada)) {
+        if (articulo.stockArticulo == 0) {
+          return "Artículo sin stock";
+        }
         return articulo.precioArticulo;
       }
     }
@@ -650,6 +656,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (cambio === null) {
           // Si calculoDevolución devuelve "Null", es decir, que no hay cambio suficiente, devolvemos el dinero al usuario e indicamos en el display que no hay cambio
           entrada = "Cambio insuficiente...";
+          setTimeout(() => {
+            // Timeout de 3s
+            entrada = "¡Bienvenido!";
+            actualizarPantalla();
+          }, 3000);
           actualizarPantalla();
           actualizarPantallaDialog();
           creditoInsertado = 0;
