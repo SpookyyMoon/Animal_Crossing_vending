@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (creditoInsertado > 0) {
             creditoInsertado = 0;
             monedasInsertadas = [];
-            entrada = "Devolviendo crédito..."
+            entrada = "Devolviendo crédito...";
             actualizarPantalla();
             actualizarPantallaDialog();
             setTimeout(() => {
@@ -636,11 +636,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     return cambioDevolver;
   }
 
-  function entregarArticulo(articuloCodigo) {
+  async function entregarArticulo(articuloCodigo) {
+    // Función asíncrona para guardar cambios a servidor
     for (const articulo of articulos) {
       if (parseInt(articulo.numeroArticulo) == parseInt(articuloCodigo)) {
-        articulo.stockArticulo -= 1;
-        calculoDevolucion(articulo.precio);
+        monedasInsertadas.forEach((nombre) => {
+          const monedaCaja = caja.find((m) => m.tipoMoneda === nombre); // Añadir las monedas del array temporal a la caja
+          if (monedaCaja) monedaCaja.cantidadMoneda += 1;
+        });
+
+        const cambio = calculoDevolucion(articulo.precioArticulo);
+
+        if (cambio === null) {
+          // Si calculoDevolución devuelve "Null", es decir, que no hay cambio suficiente, devolvemos el dinero al usuario e indicamos en el display que no hay cambio
+          entrada = "Cambio insuficiente...";
+          actualizarPantalla();
+          actualizarPantallaDialog();
+          creditoInsertado = 0;
+          monedasInsertadas = [];
+          return;
+        }
+
+        articulo.stockArticulo -= 1; // Si es posible entregar el artículo y dar cambio restamos uno
+
+        // Guardamos la nueva caja y el artículo actualizado
+        await guardarArticulo(articulo.numeroArticulo, {
+          stockArticulo: articulo.stockArticulo,
+        });
+        await guardarCaja(caja);
+
+        // Vaciamos crédito insertado y lista de monedas
+        creditoInsertado = 0;
+        monedasInsertadas = [];
+        actualizarPantallaDialog();
       }
     }
   }
