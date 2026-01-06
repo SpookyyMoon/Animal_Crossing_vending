@@ -285,9 +285,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else if (valor == "E") {
       if (comprobacionObjeto(entrada) == "Producto inválido") {
         entrada = "Producto inválido";
+        setTimeout(() => {
+          // Timeout de 3s
+          entrada = "Seleccione producto...";
+          actualizarPantalla();
+        }, 3000);
         actualizarPantalla();
       } else if (comprobacionObjeto(entrada) == "Artículo sin stock") {
         entrada = "Artículo sin stock";
+        setTimeout(() => {
+          // Timeout de 3s
+          entrada = "Seleccione producto...";
+          actualizarPantalla();
+        }, 3000);
         actualizarPantalla();
       } else {
         let articuloCodigo = entrada;
