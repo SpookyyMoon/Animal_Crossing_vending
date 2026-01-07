@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let entradaDialog = "";
   let creditoInsertado = 0;
   let monedasInsertadas = [];
+  let procesandoPedido = false;
 
   // Elementos por ID
   const pantalla = document.getElementById("pantalla");
@@ -216,6 +217,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (botonesAdmin.length > 0) {
     botonesAdmin.forEach((boton) => {
       boton.addEventListener("click", () => {
+        if (procesandoPedido) return;
         const idBoton = boton.id;
 
         if (idBoton === "boton1" && overlay) {
@@ -244,6 +246,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (botonesIngreso.length > 0) {
     botonesIngreso.forEach((boton) => {
       boton.addEventListener("click", () => {
+        if (procesandoPedido) return;
         const idBoton = boton.id;
 
         if (idBoton === "cents_5") {
@@ -281,8 +284,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function gestorTecla(valor) {
-    // Sonido al pulsar tecla
-    // sonidoAnimalese(valor);
+    if (procesandoPedido) return;
     // Añadir número a pantalla
     if (
       entrada.includes("¡Bienvenido!") ||
@@ -331,6 +333,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           }, 3000);
         } else {
           entrada = "Procesando...";
+          procesandoPedido = true;
           actualizarPantalla();
           entregarArticulo(articuloCodigo);
           setTimeout(() => {
@@ -340,6 +343,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             setTimeout(() => {
               // Timeout de 3s
               entrada = "¡Bienvenido!";
+              procesandoPedido = false;
               actualizarPantalla();
             }, 3000);
           }, 3000);
@@ -501,72 +505,171 @@ document.addEventListener("DOMContentLoaded", async () => {
         case "Caña":
           stockCanha.value = articulo.stockArticulo;
           stockCanha.addEventListener("change", () => {
+            let nuevoValor = Number(stockCanha.value);
+            const maximo = Number(stockCanha.max);
+            const minimo = Number(stockCanha.min);
+            if (nuevoValor > maximo) {
+              alert(`El stock máximo permitido es ${maximo}`);
+              nuevoValor = maximo;
+              stockCanha.value = maximo;
+            } else if (nuevoValor < minimo) {
+              nuevoValor = minimo;
+              stockCanha.value = minimo;
+            }
             guardarArticulo(articulo.numeroArticulo, {
-              stockArticulo: Number(stockCanha.value),
+              stockArticulo: nuevoValor,
             });
           });
           break;
         case "Red":
           stockRed.value = articulo.stockArticulo;
           stockRed.addEventListener("change", () => {
+            let nuevoValor = Number(stockRed.value);
+            const maximo = Number(stockRed.max);
+            const minimo = Number(stockRed.min);
+            if (nuevoValor > maximo) {
+              alert(`El stock máximo permitido es ${maximo}`);
+              nuevoValor = maximo;
+              stockRed.value = maximo;
+            } else if (nuevoValor < minimo) {
+              nuevoValor = minimo;
+              stockRed.value = minimo;
+            }
             guardarArticulo(articulo.numeroArticulo, {
-              stockArticulo: Number(stockRed.value),
+              stockArticulo: nuevoValor,
             });
           });
           break;
         case "Regadera":
           stockRegadera.value = articulo.stockArticulo;
           stockRegadera.addEventListener("change", () => {
+            let nuevoValor = Number(stockRegadera.value);
+            const maximo = Number(stockRegadera.max);
+            const minimo = Number(stockRegadera.min);
+            if (nuevoValor > maximo) {
+              alert(`El stock máximo permitido es ${maximo}`);
+              nuevoValor = maximo;
+              stockRegadera.value = maximo;
+            } else if (nuevoValor < minimo) {
+              nuevoValor = minimo;
+              stockRegadera.value = minimo;
+            }
             guardarArticulo(articulo.numeroArticulo, {
-              stockArticulo: Number(stockRegadera.value),
+              stockArticulo: nuevoValor,
             });
           });
           break;
         case "Madera":
           stockMadera.value = articulo.stockArticulo;
           stockMadera.addEventListener("change", () => {
+            let nuevoValor = Number(stockMadera.value);
+            const maximo = Number(stockMadera.max);
+            const minimo = Number(stockMadera.min);
+            if (nuevoValor > maximo) {
+              alert(`El stock máximo permitido es ${maximo}`);
+              nuevoValor = maximo;
+              stockMadera.value = maximo;
+            } else if (nuevoValor < minimo) {
+              nuevoValor = minimo;
+              stockMadera.value = minimo;
+            }
             guardarArticulo(articulo.numeroArticulo, {
-              stockArticulo: Number(stockMadera.value),
+              stockArticulo: nuevoValor,
             });
           });
           break;
         case "Madera dura":
           stockMaderaDura.value = articulo.stockArticulo;
           stockMaderaDura.addEventListener("change", () => {
+            let nuevoValor = Number(stockMaderaDura.value);
+            const maximo = Number(stockMaderaDura.max);
+            const minimo = Number(stockMaderaDura.min);
+            if (nuevoValor > maximo) {
+              alert(`El stock máximo permitido es ${maximo}`);
+              nuevoValor = maximo;
+              stockMaderaDura.value = maximo;
+            } else if (nuevoValor < minimo) {
+              nuevoValor = minimo;
+              stockMaderaDura.value = minimo;
+            }
             guardarArticulo(articulo.numeroArticulo, {
-              stockArticulo: Number(stockMaderaDura.value),
+              stockArticulo: nuevoValor,
             });
           });
           break;
         case "Madera flexible":
           stockMaderaFlexible.value = articulo.stockArticulo;
           stockMaderaFlexible.addEventListener("change", () => {
+            let nuevoValor = Number(stockMaderaFlexible.value);
+            const maximo = Number(stockMaderaFlexible.max);
+            const minimo = Number(stockMaderaFlexible.min);
+            if (nuevoValor > maximo) {
+              alert(`El stock máximo permitido es ${maximo}`);
+              nuevoValor = maximo;
+              stockMaderaFlexible.value = maximo;
+            } else if (nuevoValor < minimo) {
+              nuevoValor = minimo;
+              stockMaderaFlexible.value = minimo;
+            }
             guardarArticulo(articulo.numeroArticulo, {
-              stockArticulo: Number(stockMaderaFlexible.value),
+              stockArticulo: nuevoValor,
             });
           });
           break;
         case "Flores rojas":
           stockFloresRojas.value = articulo.stockArticulo;
           stockFloresRojas.addEventListener("change", () => {
+            let nuevoValor = Number(stockFloresRojas.value);
+            const maximo = Number(stockFloresRojas.max);
+            const minimo = Number(stockFloresRojas.min);
+            if (nuevoValor > maximo) {
+              alert(`El stock máximo permitido es ${maximo}`);
+              nuevoValor = maximo;
+              stockFloresRojas.value = maximo;
+            } else if (nuevoValor < minimo) {
+              nuevoValor = minimo;
+              stockFloresRojas.value = minimo;
+            }
             guardarArticulo(articulo.numeroArticulo, {
-              stockArticulo: Number(stockFloresRojas.value),
+              stockArticulo: nuevoValor,
             });
           });
           break;
         case "Flores blancas":
           stockFloresBlancas.value = articulo.stockArticulo;
           stockFloresBlancas.addEventListener("change", () => {
+            let nuevoValor = Number(stockFloresBlancas.value);
+            const maximo = Number(stockFloresBlancas.max);
+            const minimo = Number(stockFloresBlancas.min);
+            if (nuevoValor > maximo) {
+              alert(`El stock máximo permitido es ${maximo}`);
+              nuevoValor = maximo;
+              stockFloresBlancas.value = maximo;
+            } else if (nuevoValor < minimo) {
+              nuevoValor = minimo;
+              stockFloresBlancas.value = minimo;
+            }
             guardarArticulo(articulo.numeroArticulo, {
-              stockArticulo: Number(stockFloresBlancas.value),
+              stockArticulo: nuevoValor,
             });
           });
           break;
         case "Flores amarillas":
           stockFloresAmarillas.value = articulo.stockArticulo;
           stockFloresAmarillas.addEventListener("change", () => {
+            let nuevoValor = Number(stockFloresAmarillas.value);
+            const maximo = Number(stockFloresAmarillas.max);
+            const minimo = Number(stockFloresAmarillas.min);
+            if (nuevoValor > maximo) {
+              alert(`El stock máximo permitido es ${maximo}`);
+              nuevoValor = maximo;
+              stockFloresAmarillas.value = maximo;
+            } else if (nuevoValor < minimo) {
+              nuevoValor = minimo;
+              stockFloresAmarillas.value = minimo;
+            }
             guardarArticulo(articulo.numeroArticulo, {
-              stockArticulo: Number(stockFloresAmarillas.value),
+              stockArticulo: nuevoValor,
             });
           });
           break;
@@ -656,7 +759,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function calculoDevolucion(precio) {
     //Filtrado de la caja (Se quitan las mayores o iguales a 5, es decir, billetes)
-    const cajaSoloMonedas = caja.filter(m => VALOR_MONEDAS[m.tipoMoneda] < 5);
+    const cajaSoloMonedas = caja.filter((m) => VALOR_MONEDAS[m.tipoMoneda] < 5);
     const cajaOrdenada = [...cajaSoloMonedas].sort(
       // Ordenación de la caja de mayor a menor
       (a, b) => VALOR_MONEDAS[b.tipoMoneda] - VALOR_MONEDAS[a.tipoMoneda]
