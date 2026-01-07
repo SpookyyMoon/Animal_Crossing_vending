@@ -4,7 +4,7 @@ Animal Crossing Vending es un sistema interactivo de gestión de máquinas expen
 
 ## Características principales:
 
-- Interfaz Temática Interactiva – Experiencia de usuario inmersiva inspirada en Animal Crossing, que incluye bocadillos de diálogo dinámicos y un sintetizador de voz (Animalese) para la comunicación del sistema.
+- Interfaz Temática Interactiva – Experiencia de usuario inmersiva inspirada en Animal Crossing, que incluye bocadillos de diálogo dinámicos y un sintetizador de voz (Animalese -> https://github.com/Acedio/animalese.js) para la comunicación del sistema.
 
 - Selección y Validación de Productos – Sistema de teclado numérico para la selección de artículos con validación en tiempo real de códigos de producto y disponibilidad de stock en la base de datos.
 
