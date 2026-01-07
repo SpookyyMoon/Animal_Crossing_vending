@@ -57,6 +57,11 @@ async function guardarCaja(caja) {
 document.addEventListener("DOMContentLoaded", async () => {
   const articulos = await obtenerArticulos();
   const caja = await obtenerCaja();
+  // Sintetizador AC
+  const synth = new Animalese(
+    "../scripts/animalese/animalese.wav",
+    function () {}
+  );
 
   // Asignación del valor de las monedas existentes en la base de datos
   const VALOR_MONEDAS = {
@@ -80,6 +85,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Elementos por ID
   const pantalla = document.getElementById("pantalla");
   const overlay = document.getElementById("overlay");
+  const overlay2 = document.getElementById("overlay2");
+  const texto_dialogos = document.getElementById("texto_dialogos");
   const boton_cerrar_dialog = document.getElementById("boton_cerrar_dialog");
   const pantalla_dialog = document.getElementById("pantalla_dialog");
   const imagen_logo = document.getElementById("imagen_logo");
@@ -89,6 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const botonesAdmin = document.querySelectorAll(".boton_admin"); // Conjunto teclas laterales
   const botonesIngreso = document.querySelectorAll(".boton_ingreso"); // Conjunto ingreso efectivo
   const opcionesAdmin = document.querySelectorAll(".opciones_admin"); // Botones panel administrador
+  const bocadillo = document.querySelector(".bocadillo"); // Bocadillo texto
 
   // Elementos panel retiradas
   const info_5cents = document.getElementById("info_5cents"); // Total moneda X
@@ -168,6 +176,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       overlay.classList.remove("unhidden");
     });
   }
+
+  // Botón cerrado dialog texto
+  if (bocadillo && overlay2) {
+    bocadillo.addEventListener("click", () => {
+      overlay2.classList.add("hidden");
+      overlay2.classList.remove("unhidden");
+    });
+  }
+
   // Botones admin
   if (opcionesAdmin.length > 0) {
     opcionesAdmin.forEach((opcion) => {
@@ -264,6 +281,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function gestorTecla(valor) {
+    // Sonido al pulsar tecla
+    // sonidoAnimalese(valor);
     // Añadir número a pantalla
     if (
       entrada.includes("¡Bienvenido!") ||
@@ -424,21 +443,53 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Retirada de la caja
   function retiradaCaja() {
+    let totalRetirada = 0;
+    let monedasRetiradas = [];
+
     caja.forEach((moneda) => {
+      let cantidadAnterior = moneda.cantidadMoneda;
+      let cantidadRetiradaMoneda = 0;
       if (
         moneda.tipoMoneda != "5 Euros" &&
         moneda.tipoMoneda != "10 Euros" &&
         moneda.tipoMoneda != "20 Euros"
       ) {
+        cantidadRetiradaMoneda = cantidadAnterior;
+        moneda.cantidadMoneda = 0;
         if (moneda.cantidadMoneda > 20) {
+          cantidadRetiradaMoneda = cantidadAnterior - 20;
           moneda.cantidadMoneda = 20;
         }
       } else {
         moneda.cantidadMoneda = 0;
       }
+
+      if (cantidadRetiradaMoneda > 0) {
+        let valorEfectivo =
+          cantidadRetiradaMoneda * VALOR_MONEDAS[moneda.tipoMoneda];
+        totalRetirada += valorEfectivo;
+        monedasRetiradas.push(
+          `${cantidadRetiradaMoneda}x ${moneda.tipoMoneda}`
+        );
+      }
     });
+
+    if (totalRetirada === 0) {
+      const fraseNoBeneficios =
+        "Vaya, vaya, parece que hoy no hay beneficios que recoger...";
+      texto_dialogos.textContent = fraseNoBeneficios;
+      sonidoAnimalese(fraseNoBeneficios);
+      return;
+    }
+
     guardarCaja(caja);
     conteoCaja();
+
+    const fraseBeneficios = `Si,si, parece que hemos ganado ${totalRetirado.toFixed(
+      2
+    )}€. (${detallesRetirada.join(", ")})`;
+    texto_dialogos.textContent = fraseBeneficios;
+    sonidoAnimalese(fraseBeneficios);
   }
 
   // Conteo del stock
@@ -676,6 +727,15 @@ document.addEventListener("DOMContentLoaded", async () => {
           creditoInsertado = 0;
           monedasInsertadas = [];
           return;
+        } else if (cambio != null) {
+          const fraseCambio =
+            "¿Así que has comprado un/a " +
+            articulo.nombreArticulo +
+            " eh? Bien, bien aquí tienes tu cambio (" +
+            cambio.join(" + ") +
+            ").";
+          texto_dialogos.textContent = fraseCambio;
+          sonidoAnimalese(fraseCambio);
         }
 
         articulo.stockArticulo -= 1; // Si es posible entregar el artículo y dar cambio restamos uno
@@ -692,5 +752,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         actualizarPantallaDialog();
       }
     }
+  }
+
+  function sonidoAnimalese(texto) {
+    overlay2.classList.add("unhidden");
+    overlay2.classList.remove("hidden");
+    const audio = new Audio();
+    const pitch = 1.0;
+    audio.src = synth.Animalese(texto, false, pitch).dataURI; // Texto + no acortar palabras + pitch a 1.0
+    audio.play();
   }
 });
