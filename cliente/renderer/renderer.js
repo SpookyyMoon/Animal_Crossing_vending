@@ -442,25 +442,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Retirada de la caja
-  function retiradaCaja() {
+  async function retiradaCaja() {
     let totalRetirada = 0;
     let monedasRetiradas = [];
 
     caja.forEach((moneda) => {
       let cantidadAnterior = moneda.cantidadMoneda;
       let cantidadRetiradaMoneda = 0;
+
       if (
         moneda.tipoMoneda != "5 Euros" &&
         moneda.tipoMoneda != "10 Euros" &&
         moneda.tipoMoneda != "20 Euros"
       ) {
-        cantidadRetiradaMoneda = cantidadAnterior;
-        moneda.cantidadMoneda = 0;
-        if (moneda.cantidadMoneda > 20) {
+        if (cantidadAnterior > 20) {
           cantidadRetiradaMoneda = cantidadAnterior - 20;
           moneda.cantidadMoneda = 20;
+        } else {
+          cantidadRetiradaMoneda = 0;
         }
       } else {
+        cantidadRetiradaMoneda = cantidadAnterior;
         moneda.cantidadMoneda = 0;
       }
 
@@ -485,9 +487,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     guardarCaja(caja);
     conteoCaja();
 
-    const fraseBeneficios = `Si,si, parece que hemos ganado ${totalRetirado.toFixed(
+    const fraseBeneficios = `Si,si, parece que hemos ganado ${totalRetirada.toFixed(
       2
-    )}€. (${detallesRetirada.join(", ")})`;
+    )}€. (${monedasRetiradas.join(", ")})`;
     texto_dialogos.textContent = fraseBeneficios;
     sonidoAnimalese(fraseBeneficios);
   }
@@ -722,10 +724,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             entrada = "¡Bienvenido!";
             actualizarPantalla();
           }, 3000);
-          actualizarPantalla();
-          actualizarPantallaDialog();
           creditoInsertado = 0;
           monedasInsertadas = [];
+          actualizarPantalla();
+          actualizarPantallaDialog();
           return;
         } else if (cambio != null) {
           const fraseCambio =
