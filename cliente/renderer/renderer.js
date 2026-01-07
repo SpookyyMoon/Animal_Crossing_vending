@@ -58,7 +58,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const articulos = await obtenerArticulos();
   const caja = await obtenerCaja();
   // Sintetizador AC
-  const synth = new Animalese("../scripts/animalese/animalese.wav", function () {});
+  const synth = new Animalese(
+    "../scripts/animalese/animalese.wav",
+    function () {}
+  );
 
   // Asignación del valor de las monedas existentes en la base de datos
   const VALOR_MONEDAS = {
@@ -440,21 +443,53 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Retirada de la caja
   function retiradaCaja() {
+    let totalRetirada = 0;
+    let monedasRetiradas = [];
+
     caja.forEach((moneda) => {
+      let cantidadAnterior = moneda.cantidadMoneda;
+      let cantidadRetiradaMoneda = 0;
       if (
         moneda.tipoMoneda != "5 Euros" &&
         moneda.tipoMoneda != "10 Euros" &&
         moneda.tipoMoneda != "20 Euros"
       ) {
+        cantidadRetiradaMoneda = cantidadAnterior;
+        moneda.cantidadMoneda = 0;
         if (moneda.cantidadMoneda > 20) {
+          cantidadRetiradaMoneda = cantidadAnterior - 20;
           moneda.cantidadMoneda = 20;
         }
       } else {
         moneda.cantidadMoneda = 0;
       }
+
+      if (cantidadRetiradaMoneda > 0) {
+        let valorEfectivo =
+          cantidadRetiradaMoneda * VALOR_MONEDAS[moneda.tipoMoneda];
+        totalRetirada += valorEfectivo;
+        monedasRetiradas.push(
+          `${cantidadRetiradaMoneda}x ${moneda.tipoMoneda}`
+        );
+      }
     });
+
+    if (totalRetirada === 0) {
+      const fraseNoBeneficios =
+        "Vaya, vaya, parece que hoy no hay beneficios que recoger...";
+      texto_dialogos.textContent = fraseNoBeneficios;
+      sonidoAnimalese(fraseNoBeneficios);
+      return;
+    }
+
     guardarCaja(caja);
     conteoCaja();
+
+    const fraseBeneficios = `Si,si, parece que hemos ganado ${totalRetirado.toFixed(
+      2
+    )}€. (${detallesRetirada.join(", ")})`;
+    texto_dialogos.textContent = fraseBeneficios;
+    sonidoAnimalese(fraseBeneficios);
   }
 
   // Conteo del stock
@@ -693,11 +728,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           monedasInsertadas = [];
           return;
         } else if (cambio != null) {
-          const fraseCambio = "¿Así que has comprado un/a " + articulo.nombreArticulo + 
-                      " eh? Bien, bien aquí tienes tu cambio (" + cambio.join(" + ") + ").";
+          const fraseCambio =
+            "¿Así que has comprado un/a " +
+            articulo.nombreArticulo +
+            " eh? Bien, bien aquí tienes tu cambio (" +
+            cambio.join(" + ") +
+            ").";
           texto_dialogos.textContent = fraseCambio;
-          overlay2.classList.add("unhidden");
-          overlay2.classList.remove("hidden");
           sonidoAnimalese(fraseCambio);
         }
 
@@ -718,6 +755,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function sonidoAnimalese(texto) {
+    overlay2.classList.add("unhidden");
+    overlay2.classList.remove("hidden");
     const audio = new Audio();
     const pitch = 1.0;
     audio.src = synth.Animalese(texto, false, pitch).dataURI; // Texto + no acortar palabras + pitch a 1.0
