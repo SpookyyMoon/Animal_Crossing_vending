@@ -57,6 +57,8 @@ async function guardarCaja(caja) {
 document.addEventListener("DOMContentLoaded", async () => {
   const articulos = await obtenerArticulos();
   const caja = await obtenerCaja();
+  // Sintetizador AC
+  const synth = new Animalese("../scripts/animalese/animalese.wav", function () {});
 
   // Asignación del valor de las monedas existentes en la base de datos
   const VALOR_MONEDAS = {
@@ -80,6 +82,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Elementos por ID
   const pantalla = document.getElementById("pantalla");
   const overlay = document.getElementById("overlay");
+  const overlay2 = document.getElementById("overlay2");
+  const texto_dialogos = document.getElementById("texto_dialogos");
   const boton_cerrar_dialog = document.getElementById("boton_cerrar_dialog");
   const pantalla_dialog = document.getElementById("pantalla_dialog");
   const imagen_logo = document.getElementById("imagen_logo");
@@ -89,6 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const botonesAdmin = document.querySelectorAll(".boton_admin"); // Conjunto teclas laterales
   const botonesIngreso = document.querySelectorAll(".boton_ingreso"); // Conjunto ingreso efectivo
   const opcionesAdmin = document.querySelectorAll(".opciones_admin"); // Botones panel administrador
+  const bocadillo = document.querySelector(".bocadillo"); // Bocadillo texto
 
   // Elementos panel retiradas
   const info_5cents = document.getElementById("info_5cents"); // Total moneda X
@@ -168,6 +173,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       overlay.classList.remove("unhidden");
     });
   }
+
+  // Botón cerrado dialog texto
+  if (bocadillo && overlay2) {
+    bocadillo.addEventListener("click", () => {
+      overlay2.classList.add("hidden");
+      overlay2.classList.remove("unhidden");
+    });
+  }
+
   // Botones admin
   if (opcionesAdmin.length > 0) {
     opcionesAdmin.forEach((opcion) => {
@@ -264,6 +278,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function gestorTecla(valor) {
+    // Sonido al pulsar tecla
+    // sonidoAnimalese(valor);
     // Añadir número a pantalla
     if (
       entrada.includes("¡Bienvenido!") ||
@@ -676,6 +692,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           creditoInsertado = 0;
           monedasInsertadas = [];
           return;
+        } else if (cambio != null) {
+          const fraseCambio = "¿Así que has comprado un/a " + articulo.nombreArticulo + 
+                      " eh? Bien, bien aquí tienes tu cambio (" + cambio.join(" + ") + ").";
+          texto_dialogos.textContent = fraseCambio;
+          overlay2.classList.add("unhidden");
+          overlay2.classList.remove("hidden");
+          sonidoAnimalese(fraseCambio);
         }
 
         articulo.stockArticulo -= 1; // Si es posible entregar el artículo y dar cambio restamos uno
@@ -692,5 +715,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         actualizarPantallaDialog();
       }
     }
+  }
+
+  function sonidoAnimalese(texto) {
+    const audio = new Audio();
+    const pitch = 1.0;
+    audio.src = synth.Animalese(texto, false, pitch).dataURI; // Texto + no acortar palabras + pitch a 1.0
+    audio.play();
   }
 });
