@@ -655,7 +655,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function calculoDevolucion(precio) {
-    const cajaOrdenada = [...caja].sort(
+    //Filtrado de la caja (Se quitan las mayores o iguales a 5, es decir, billetes)
+    const cajaSoloMonedas = caja.filter(m => VALOR_MONEDAS[m.tipoMoneda] < 5);
+    const cajaOrdenada = [...cajaSoloMonedas].sort(
       // Ordenación de la caja de mayor a menor
       (a, b) => VALOR_MONEDAS[b.tipoMoneda] - VALOR_MONEDAS[a.tipoMoneda]
     );
